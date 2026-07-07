@@ -9,6 +9,41 @@
     </filter>
   </defs>
 
+  <style>
+    /* Lines are VISIBLE by default (static fallback). CSS animation layers the
+       sequential reveal on top; if animations don't run, the full session shows. */
+    @keyframes l1  {0%,1.5%{opacity:0}  2%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes l1o {0%,9.5%{opacity:0}  11%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes l2  {0%,11.5%{opacity:0} 12%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes l2o {0%,19.5%{opacity:0} 21%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes l3  {0%,21.5%{opacity:0} 22%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes l4  {0%,29%{opacity:0}   29.5%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes p1  {0%,39.1%{opacity:0} 40.5%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes p2  {0%,44.5%{opacity:0} 45.9%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes p3  {0%,50%{opacity:0}   51.4%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes p4  {0%,55.5%{opacity:0} 56.9%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes p5  {0%,60.9%{opacity:0} 62.3%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes p6  {0%,66.4%{opacity:0} 67.8%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes idl {0%,72%{opacity:0}   73.4%,92%{opacity:1} 96%,100%{opacity:0}}
+    @keyframes blink {0%,49%{opacity:1} 50%,100%{opacity:0}}
+    @keyframes type1 {0%,2%{width:466px}  8.2%,100%{width:0px}}
+    @keyframes type2 {0%,12%{width:306px} 18.2%,100%{width:0px}}
+    @keyframes type3 {0%,22%{width:206px} 26.4%,100%{width:0px}}
+    @keyframes type4 {0%,29.5%{width:328px} 35.5%,100%{width:0px}}
+    .l1{animation:l1 22s linear infinite}   .l1o{animation:l1o 22s linear infinite}
+    .l2{animation:l2 22s linear infinite}   .l2o{animation:l2o 22s linear infinite}
+    .l3{animation:l3 22s linear infinite}   .l4{animation:l4 22s linear infinite}
+    .p1{animation:p1 22s linear infinite}   .p2{animation:p2 22s linear infinite}
+    .p3{animation:p3 22s linear infinite}   .p4{animation:p4 22s linear infinite}
+    .p5{animation:p5 22s linear infinite}   .p6{animation:p6 22s linear infinite}
+    .idl{animation:idl 22s linear infinite}
+    .cur{animation:blink 1s step-end infinite}
+    .t1{width:0;animation:type1 22s linear infinite}
+    .t2{width:0;animation:type2 22s linear infinite}
+    .t3{width:0;animation:type3 22s linear infinite}
+    .t4{width:0;animation:type4 22s linear infinite}
+  </style>
+
   <!-- window glow -->
   <rect x="14" y="14" width="792" height="452" rx="14" fill="#6d5bd0" opacity="0.25" filter="url(#winglow)"/>
 
@@ -24,87 +59,54 @@
 
   <g font-family="Consolas, Menlo, monospace" font-size="14.5">
 
-    <!-- L1: git clone (typed) -->
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.017;0.018;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="l1">
       <text x="30" y="80"><tspan fill="#34d399">❯</tspan><tspan fill="#e2e8f0" xml:space="preserve"> git clone </tspan><tspan fill="#7dd3fc">https://github.com/ljojua1998/skills.git</tspan></text>
-      <rect y="64" height="24" fill="#0d1424">
-        <animate attributeName="x" values="44;44;510;510" keyTimes="0;0.018;0.082;1" dur="22s" repeatCount="indefinite"/>
-        <animate attributeName="width" values="466;466;0;0" keyTimes="0;0.018;0.082;1" dur="22s" repeatCount="indefinite"/>
-      </rect>
+      <rect class="t1" x="44" y="64" height="24" fill="#0d1424" transform="matrix(-1 0 0 1 554 0)"/>
     </g>
-    <!-- L1 output -->
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.095;0.11;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="l1o">
       <text x="30" y="110" fill="#64748b">Cloning into 'skills'... done.</text>
     </g>
 
-    <!-- L2: install (typed) -->
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.117;0.118;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="l2">
       <text x="30" y="140"><tspan fill="#34d399">❯</tspan><tspan fill="#e2e8f0" xml:space="preserve"> cd skills; </tspan><tspan fill="#f0abfc">.\install.ps1 -Global</tspan></text>
-      <rect y="124" height="24" fill="#0d1424">
-        <animate attributeName="x" values="44;44;350;350" keyTimes="0;0.118;0.182;1" dur="22s" repeatCount="indefinite"/>
-        <animate attributeName="width" values="306;306;0;0" keyTimes="0;0.118;0.182;1" dur="22s" repeatCount="indefinite"/>
-      </rect>
+      <rect class="t2" x="44" y="124" height="24" fill="#0d1424" transform="matrix(-1 0 0 1 394 0)"/>
     </g>
-    <!-- L2 output -->
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.195;0.21;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="l2o">
       <text x="30" y="170"><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve"> installed: </tspan><tspan fill="#e2e8f0">12 agents · 13 skills · quality-gate hook</tspan></text>
     </g>
 
-    <!-- L3: claude (typed) -->
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.217;0.218;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="l3">
       <text x="30" y="200"><tspan fill="#34d399">❯</tspan><tspan fill="#e2e8f0" xml:space="preserve"> cd my-project; </tspan><tspan fill="#fbbf24">claude</tspan></text>
-      <rect y="184" height="24" fill="#0d1424">
-        <animate attributeName="x" values="44;44;250;250" keyTimes="0;0.218;0.264;1" dur="22s" repeatCount="indefinite"/>
-        <animate attributeName="width" values="206;206;0;0" keyTimes="0;0.218;0.264;1" dur="22s" repeatCount="indefinite"/>
-      </rect>
+      <rect class="t3" x="44" y="184" height="24" fill="#0d1424" transform="matrix(-1 0 0 1 294 0)"/>
     </g>
 
-    <!-- L4: /ship (typed) -->
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.29;0.291;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="l4">
       <text x="30" y="230"><tspan fill="#34d399">❯</tspan><tspan fill="#e2e8f0" xml:space="preserve"> /ship </tspan><tspan fill="#7dd3fc">"build an expense tracker"</tspan></text>
-      <rect y="214" height="24" fill="#0d1424">
-        <animate attributeName="x" values="44;44;372;372" keyTimes="0;0.291;0.355;1" dur="22s" repeatCount="indefinite"/>
-        <animate attributeName="width" values="328;328;0;0" keyTimes="0;0.291;0.355;1" dur="22s" repeatCount="indefinite"/>
-      </rect>
+      <rect class="t4" x="44" y="214" height="24" fill="#0d1424" transform="matrix(-1 0 0 1 416 0)"/>
     </g>
 
-    <!-- pipeline output -->
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.391;0.405;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="p1">
       <text x="30" y="264"><tspan fill="#a78bfa">🧠 planner</tspan><tspan fill="#94a3b8" xml:space="preserve">   6 tickets on the board</tspan></text>
     </g>
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.445;0.459;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="p2">
       <text x="30" y="294"><tspan fill="#818cf8">🔨 build</tspan><tspan fill="#94a3b8" xml:space="preserve">     DEV-001…006 — 3 agents in parallel</tspan></text>
     </g>
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.5;0.514;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="p3">
       <text x="30" y="324"><tspan fill="#fbbf24">🚦 gate</tspan><tspan fill="#94a3b8" xml:space="preserve">      typecheck </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve"> lint </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve"> tests </tspan><tspan fill="#34d399">42 passing ✓</tspan></text>
     </g>
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.555;0.569;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="p4">
       <text x="30" y="354"><tspan fill="#c4b5fd">🔍 verify</tspan><tspan fill="#94a3b8" xml:space="preserve">    qa </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve"> security </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve"> audit </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve"> design </tspan><tspan fill="#34d399">✓</tspan></text>
     </g>
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.609;0.623;0.93;0.963" dur="22s" repeatCount="indefinite"/>
-      <text x="30" y="384"><tspan fill="#f0abfc">🤨 verifier</tspan><tspan fill="#94a3b8" xml:space="preserve">   3 findings → </tspan><tspan fill="#fb7185">1 confirmed</tspan><tspan fill="#94a3b8">, </tspan><tspan fill="#64748b">2 refuted</tspan><tspan fill="#94a3b8" xml:space="preserve">  →  </tspan><tspan fill="#e879f9">🔧 fixed, re-verified </tspan><tspan fill="#34d399">✓</tspan></text>
+    <g class="p5">
+      <text x="30" y="384"><tspan fill="#f0abfc">🤨 verifier</tspan><tspan fill="#94a3b8" xml:space="preserve">   3 findings → </tspan><tspan fill="#fb7185">1 confirmed</tspan><tspan fill="#94a3b8">, </tspan><tspan fill="#64748b">2 refuted</tspan><tspan fill="#94a3b8" xml:space="preserve">  →  </tspan><tspan fill="#e879f9">🔧 fixed </tspan><tspan fill="#34d399">✓</tspan></text>
     </g>
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.664;0.678;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="p6">
       <text x="30" y="420"><tspan fill="#34d399" font-weight="700">✅ EPIC-001 done</tspan><tspan fill="#94a3b8" xml:space="preserve">  ·  branch </tspan><tspan fill="#7dd3fc">devflow/epic-001</tspan><tspan fill="#94a3b8" xml:space="preserve">  ·  PR ready</tspan></text>
     </g>
 
-    <!-- idle prompt -->
-    <g opacity="0">
-      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.72;0.734;0.93;0.963" dur="22s" repeatCount="indefinite"/>
+    <g class="idl">
       <text x="30" y="450"><tspan fill="#34d399">❯</tspan></text>
-      <text x="48" y="450" fill="#7dd3fc">▌<animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></text>
+      <text class="cur" x="48" y="450" fill="#7dd3fc">▌</text>
     </g>
   </g>
 </svg>
