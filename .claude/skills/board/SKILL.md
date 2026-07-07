@@ -12,6 +12,8 @@ Read the project's `workboard/` directory and give the user a Jira-style status 
 1. Read `workboard/BOARD.md` and every file in `workboard/epics/` and `workboard/tickets/`
    (frontmatter is enough for most; read bodies only for non-`done` tickets).
 2. Render a compact report:
+   - The **Now** line from BOARD.md first — if a run is active, this is what the
+     user most wants to see.
    - Epic(s): title, status, progress (`done`/total tickets).
    - Ticket table: ID, title, type, assignee, priority, status.
    - **Open findings**: any unfixed CRITICAL/HIGH from QA/Security/Audit sections.

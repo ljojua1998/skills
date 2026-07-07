@@ -22,7 +22,8 @@ conversation). Drive it from idea to verified, done state in this single run.
    audit pass with no open CRITICAL or HIGH findings.
 4. **Parallelize aggressively** where tickets are independent; respect `depends_on`
    ordering where they are not.
-5. **Keep the user informed** with a short status line between phases — not walls of text.
+5. **Emit a status pulse** — see Status Pulses below. Silence longer than one
+   agent-completion is a bug.
 6. **Spend tokens where they buy quality, nowhere else** — see Pipeline Modes and
    Token Discipline below.
 
@@ -45,6 +46,34 @@ This is the default: do NOT downgrade models on your own. Only with the explicit
 override (Agent tool's `model` parameter) — but keep the planner, verifier and
 debugger on the session model even then: plan quality and fix correctness gate
 everything downstream.
+
+## Status Pulses (the user must never wonder "what is it doing?")
+
+After **every** agent completion, phase transition, and loop-mode cycle, print a
+compact pulse to the user — one block, no walls of text:
+
+```
+▸ [EPIC-001 · standard · phase 2/5 · ~34m elapsed]
+  done: 3/6 tickets (DEV-001 ✓ DEV-002 ✓ DEV-004 ✓)
+  running: DEV-003 backend-developer, DEV-005 frontend-developer
+  problems: DEV-006 blocked — missing API key (needs you)
+  spend so far: 9 agents spawned · 14 commits · 2 findings fixed
+  next: finish builds → verify phase (QA/security/design/tests in parallel)
+```
+
+Rules:
+- `problems:` line appears the moment something blocks, fails a retry, or a guard
+  trips — with WHAT IS NEEDED to unblock it. Never park a problem silently until
+  the final report.
+- `spend so far:` counts work units you can actually observe (agents spawned,
+  tickets done, commits, findings found/fixed). For exact token cost, remind the
+  user once per run — at the first pulse — that `/cost` (and Esc to pause safely +
+  `/ship resume`) are available at any time.
+- Mirror every pulse into `BOARD.md`'s **Now** line (replace, don't append) and
+  add one activity-log entry — so a second terminal watching `/board` sees live
+  state.
+- Estimate honestly: if you can't predict remaining time, say what remains in
+  work units ("2 tickets + verify + debug"), not a made-up ETA.
 
 ## Persistence — loop-until-done (optional)
 

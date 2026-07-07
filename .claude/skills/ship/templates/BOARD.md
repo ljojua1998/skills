@@ -2,6 +2,12 @@
 
 > Managed by the DevFlow agent system. Do not edit ticket statuses manually while a `/ship` run is in progress.
 
+## Now
+
+<!-- NOW:BEGIN -->
+_No active run._
+<!-- NOW:END -->
+
 ## Legend
 
 | Status | Meaning |
