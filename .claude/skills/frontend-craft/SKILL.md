@@ -34,6 +34,12 @@ applies to net-new surfaces, not to fighting existing brand rules.
 
 ## Engineering standards
 
+- **Small units, always.** One component = one responsibility. When a component
+  passes ~150–200 lines, renders several distinct concerns, or needs scrolling to
+  understand — split it: extract child components, move logic into hooks
+  (`useXxx`), move pure helpers into utils. One component per file; no god-files
+  that export half the app. Same for functions: if it does "and", it's two
+  functions.
 - **Reuse first**: search for existing components, hooks, and utilities before
   creating new ones; extend rather than fork.
 - **State placement**: local state for local concerns; server state via the

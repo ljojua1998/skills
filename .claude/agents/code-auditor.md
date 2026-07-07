@@ -24,6 +24,10 @@ maintainability. Stay in your lane; don't duplicate their findings.
    - Layering violations (UI reaching into DB, business logic in controllers/components).
    - Duplication: re-implementing something that exists in the codebase or its libraries.
    - Wrong-altitude code: hardcoded values that must be config; premature abstraction; over-engineering beyond the ticket's scope.
+   - Oversized units: functions doing several jobs (~40+ lines with multiple
+     concerns), components past ~200 lines rendering distinct concerns, god-files
+     (~300+ lines of unrelated responsibilities) — flag with a concrete split
+     suggestion (usually MEDIUM; HIGH when it buries a bug).
 4. **Maintainability**:
    - Dead code, commented-out blocks, leftover debug logging, TODO bombs.
    - Misleading names/comments; comments that narrate instead of explaining constraints.

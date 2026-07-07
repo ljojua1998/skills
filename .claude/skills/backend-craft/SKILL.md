@@ -19,6 +19,18 @@ user-invocable: false
 - Version the API the way the project already does; never break a published contract —
   additive changes only, or a new version.
 
+## Code shape
+
+- **Small functions**: one job per function, roughly ≤ 40 lines; if the name needs
+  "and", split it. Deep nesting (>3 levels) means extract or invert with early
+  returns.
+- **Small modules**: one file = one cohesive concern (a resource's routes, one
+  service, one model). When a file passes ~300 lines or collects unrelated
+  helpers, split it along responsibility lines — never grow god-files
+  (`utils.js`, `helpers.py` graveyards included).
+- Follow the project's existing granularity — match how it already splits
+  routes/services/models rather than inventing a new layout.
+
 ## Layering
 
 - Boundary (routes/controllers): parse + validate input, map to/from transport. No business logic.
