@@ -5,8 +5,8 @@
 <br/>
 
 ![Claude Code](https://img.shields.io/badge/Claude_Code-native-a78bfa?style=for-the-badge&logo=anthropic&logoColor=white)
-![Agents](https://img.shields.io/badge/agents-12-38bdf8?style=for-the-badge)
-![Skills](https://img.shields.io/badge/skills-13-34d399?style=for-the-badge)
+![Agents](https://img.shields.io/badge/agents-13-38bdf8?style=for-the-badge)
+![Skills](https://img.shields.io/badge/skills-14-34d399?style=for-the-badge)
 ![Dependencies](https://img.shields.io/badge/dependencies-zero-f472b6?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-64748b?style=for-the-badge)
 
@@ -193,6 +193,7 @@ can resume the pipeline from the board alone.
 | `/qa [scope]` | Standalone QA pass on recent changes |
 | `/security-audit [scope\|full]` | Standalone OWASP-style security review |
 | `/debug-findings` | Fix open findings from any review |
+| `/tests [coverage \| e2e "<flow>" \| flaky]` | Strengthen the test suite: fill coverage gaps, build an E2E journey, or stabilize flaky tests |
 | `/retro [EPIC-NNN]` | Distill the epic's lessons into steering docs (auto-runs on standard/full ships) |
 | `/devflow-update` | Pull the latest DevFlow from this repo and reinstall |
 
@@ -207,6 +208,7 @@ can resume the pipeline from the board alone.
 | 📱 `mobile-developer` | RN/Expo/Flutter/native screens, offline, perf | mobile-, frontend-, testing-craft |
 | 🐳 `devops-engineer` | Docker, CI/CD, env config, deploy scripts, health checks | — (standards built in) |
 | 🔍 `qa-engineer` | Executes acceptance criteria + edge probing; severity-ranked findings | testing-craft |
+| 🕸️ `test-engineer` | Codifies acceptance criteria into automated tests, fills coverage gaps, kills flakiness — the regression net grows every epic | testing-craft |
 | 🛡️ `security-auditor` | OWASP-style review of the changed surface; exploit-scenario findings | — |
 | 🧐 `code-auditor` | Pre-merge correctness/architecture/consistency audit | — |
 | 📸 `design-reviewer` | Runs the app, screenshots UI at 3 breakpoints, critiques like a designer | frontend-craft |
@@ -274,6 +276,11 @@ CRITICAL/HIGH findings — that gate is enforced by the `/ship` flow.
 - 📸 **Visual review** — the `design-reviewer` looks at the actual rendered UI
   (screenshots at three breakpoints, driven states) and files design findings into
   the same debug loop as functional bugs. Code review can't see a broken layout.
+- 🕸️ **A regression net that grows** — the `test-engineer` turns every epic's
+  acceptance criteria into durable automated tests (integration + E2E for critical
+  journeys) and fills coverage gaps on changed code. Those tests run in the
+  quality gate forever after — each epic makes the next one safer. Flaky tests get
+  root-cause fixes, never sleeps or silent skips.
 - 🧬 **Self-improvement** — agents carry `memory: project` (run/test commands,
   gotchas, recurring bug patterns persist across sessions) and `/retro` distills
   each epic's lessons into the steering docs. By the fifth epic, the pipeline is a

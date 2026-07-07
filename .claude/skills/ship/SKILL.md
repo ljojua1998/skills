@@ -203,6 +203,11 @@ When all buildable tickets are `built`, set them to `qa` and spawn the reviewers
 3. **code-auditor** — code quality, architecture and consistency audit (full only).
 4. **design-reviewer** — screenshot-based visual review of the changed UI
    (standard/full, only when the epic contains frontend/mobile/fullstack tickets).
+5. **test-engineer** — codifies the epic's acceptance criteria into durable
+   automated tests (integration + E2E for critical journeys), fills coverage gaps
+   on changed code (standard/full). Its tests run in the quality gate from then on
+   — the regression net grows with every epic. If it exposes real bugs while
+   testing, those are findings like any other.
 
 Each receives: the list of built tickets (paths), list of changed files, and instruction to:
 - Append findings to each ticket's respective findings section as
