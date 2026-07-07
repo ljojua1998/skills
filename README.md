@@ -34,6 +34,7 @@ flowchart TD
         QA[qa-engineer]
         SEC[security-auditor]
         AUD[code-auditor]
+        DES[design-reviewer<br/>screenshots @ 375/768/1440]
     end
 
     VERIFY -- "severity-ranked findings → tickets" --> SKEP[verifier agent<br/>skeptic: confirm / refute]
@@ -41,6 +42,7 @@ flowchart TD
     SKEP -- confirmed --> DBG[debugger<br/>root-cause → fix → verify<br/>max 3 iterations]
     DBG --> VERIFY
     DBG -- clean --> DONE([final report + devflow/epic branch])
+    DONE --> RETRO["/retro: lessons → steering docs<br/>(next run is smarter & cheaper)"]
 ```
 
 Everything is state-on-disk: tickets are markdown files with frontmatter statuses,
@@ -156,6 +158,9 @@ Claude Code session; if still missing, check that `.claude/skills/` and
 | `/ship --full "<task>"` | Force the thorough path: all phases, all three reviewers |
 | `/ship --review "<task>"` | Pause after planning — the plan needs your approval before building starts |
 | `/ship --budget "<task>"` | Economy run: developer/reviewer agents downgraded to Sonnet (planner, verifier and debugger stay on the session model) |
+| `/ship --discover "<idea>"` | Force the discovery interview: 3–5 sharp questions → mini-PRD → then plan (auto-triggers on vague/greenfield requests) |
+| `/retro [EPIC-NNN]` | Post-epic retrospective: distill recurring findings and hard-won facts into steering docs (auto-runs at the end of standard/full ships) |
+| `/devflow-update` | Pull the latest DevFlow from the source repo and reinstall it here |
 | `/ship resume` | Continue an interrupted run from the workboard state |
 | `/board` | Jira-style status view: epics, tickets, open findings, blockers |
 | `/board add <desc>` | Add a backlog ticket without building it |
@@ -175,6 +180,7 @@ Claude Code session; if still missing, check that `.claude/skills/` and
 | `devops-engineer` | Docker, CI/CD, env config, deploy scripts, health checks | — (standards built in) |
 | `qa-engineer` | Executes acceptance criteria + edge probing; severity-ranked findings | testing-craft |
 | `verifier` | Skeptic: adversarially confirms/refutes findings so false positives never reach the debugger | — |
+| `design-reviewer` | Runs the app, screenshots changed UI at 375/768/1440, critiques hierarchy/spacing/states/slop-tells | frontend-craft |
 | `security-auditor` | OWASP-style review of the changed surface; exploit-scenario findings | — |
 | `code-auditor` | Pre-merge correctness/architecture/consistency audit | — |
 | `debugger` | Root-cause fixes for findings, verify-before-done | debugging-craft, testing-craft |
@@ -228,7 +234,20 @@ with zero open CRITICAL/HIGH findings — that gate is enforced by the `/ship` f
 - **Git discipline** — each epic runs on its own `devflow/epic-NNN-*` branch; each
   finished ticket is one conventional commit (`feat(DEV-003): ...`), debug fixes
   are `fix(DEV-003): ...`. Full traceability, any stage revertable. Merging and
-  pushing stay in your hands.
+  pushing stay in your hands (at close, `/ship` *offers* to push and open a PR via
+  `gh` with a generated description — it never pushes without your yes).
+- **Discovery interview** — vague or greenfield requests trigger 3–5 sharp
+  questions (users? MVP flows? out of scope? constraints?) before any planning;
+  the answers become a mini-PRD in the epic. Building the wrong thing is the most
+  expensive failure mode — this kills it at the source.
+- **Visual review** — the `design-reviewer` agent looks at the actual rendered UI
+  (screenshots at three breakpoints, driven states) and files design findings into
+  the same debug loop as functional bugs. Code review can't see a broken layout.
+- **Retro loop** — after each standard/full epic, `/retro` distills recurring
+  finding classes and hard-won environment facts into the steering docs. By the
+  fifth epic, the pipeline is a project veteran, not a newcomer.
+- **Docs stay true** — Phase 5 updates CHANGELOG.md, affected README sections and
+  CLAUDE.md before the closing commit.
 
 ## Token efficiency
 

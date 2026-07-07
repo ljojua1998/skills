@@ -3,7 +3,7 @@ id: DEV-000
 title: <short imperative title>
 epic: EPIC-000
 type: frontend | backend | fullstack | mobile | infra | chore
-assignee: frontend-developer | backend-developer | fullstack-developer | mobile-developer
+assignee: frontend-developer | backend-developer | fullstack-developer | mobile-developer | devops-engineer
 priority: P0 | P1 | P2 | P3
 status: backlog
 depends_on: []
@@ -47,6 +47,10 @@ that a developer agent can implement it without reading the whole epic.>
 ## Audit Findings
 
 <!-- Code auditor appends findings here: [SEVERITY] description — file:line -->
+
+## Design Findings
+
+<!-- Design reviewer appends findings here: [SEVERITY] what & where — screen @ breakpoint -->
 
 ## Debug Log
 

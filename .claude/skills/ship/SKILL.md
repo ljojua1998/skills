@@ -1,7 +1,7 @@
 ---
 name: ship
 description: Full delivery pipeline — takes a feature/project request, plans it into Jira-like markdown tickets, builds each ticket with specialized developer agents, then runs QA, security and code-audit agents, loops a debugger agent over findings until clean, and closes with a final report. Use when the user asks to build a feature or project end-to-end, or invokes /ship.
-argument-hint: "[--quick|--full] [--review] [--budget] <what to build> | resume"
+argument-hint: "[--quick|--full] [--review] [--budget] [--discover] <what to build> | resume"
 ---
 
 # /ship — One-Command Delivery Pipeline
@@ -81,6 +81,15 @@ everything downstream.
 
 ## Phase 1 — Plan
 
+**Discovery first, when warranted.** If the request is a vague or greenfield
+product idea (target users unclear, MVP scope open, one-sentence "build me an X"),
+ask 3–5 sharp questions in ONE AskUserQuestion call before planning: who uses it,
+the 2–3 core MVP flows, what's explicitly out of scope, constraints/stack
+preferences, what success looks like. Distill the answers into a mini-PRD that goes
+into the epic's Goal section and the planner's context. Skip discovery entirely for
+clear, scoped tasks — never interrogate the user about a button fix. The
+`--discover` flag forces it; `--quick` forbids it.
+
 Spawn the **planner** agent (subagent_type: `planner`) with:
 - The user's request verbatim.
 - Project context: stack, structure, existing conventions, the next free EPIC/DEV numbers.
@@ -139,6 +148,8 @@ When all buildable tickets are `built`, set them to `qa` and spawn the reviewers
 2. **security-auditor** — security review of the changed surface (standard/full, or
    quick when the change touches a sensitive surface).
 3. **code-auditor** — code quality, architecture and consistency audit (full only).
+4. **design-reviewer** — screenshot-based visual review of the changed UI
+   (standard/full, only when the epic contains frontend/mobile/fullstack tickets).
 
 Each receives: the list of built tickets (paths), list of changed files, and instruction to:
 - Append findings to each ticket's respective findings section as
@@ -173,12 +184,23 @@ While open confirmed CRITICAL/HIGH findings exist (max **3 iterations**):
 1. Set clean tickets to `done`, check the epic's Definition of Done, set the epic
    status, and write its **Final Report** section: what was built, files touched,
    verification results, open items.
-2. Update `BOARD.md` (statuses + activity log entry) and update
+2. **Docs.** Update the project docs this epic affected: a `CHANGELOG.md` entry,
+   README sections that became wrong or incomplete, and CLAUDE.md (new commands,
+   structure, conventions). Small inline edits by you — no agent spawn needed.
+3. Update `BOARD.md` (statuses + activity log entry) and update
    `workboard/steering/` docs if this epic changed the stack/structure/conventions.
    Final commit: `chore(EPIC-NNN): close epic`.
-3. Report to the user: what was built, how it was verified (QA/security/audit results
-   with finding counts), the branch name (merging is the user's call — do not merge
-   or push unless asked), anything blocked or deferred, and how to run/see the result.
+4. **Retro** (standard/full modes): run the `/retro` flow for this epic — its
+   analyst distills recurring findings and hard-won facts into the steering docs.
+5. **PR (optional).** If the repo has a remote, ask the user (AskUserQuestion):
+   push the `devflow/epic-NNN-*` branch and open a PR? On yes: push, then
+   `gh pr create` with a body built from the epic's Final Report (what/why, finding
+   stats, ticket list). Without `gh`, push and give the compare URL. Never push
+   without the explicit yes.
+6. Report to the user: what was built, how it was verified (QA/security/audit/design
+   results with finding counts), retro lessons (one line each), the branch/PR link
+   (merging is the user's call — never merge yourself), anything blocked or
+   deferred, and how to run/see the result.
 
 ## Resuming
 
