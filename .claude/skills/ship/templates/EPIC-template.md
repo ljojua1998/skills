@@ -2,6 +2,7 @@
 id: EPIC-000
 title: <feature / project name>
 status: planning | in_progress | verifying | done
+persistence: capped | loop
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---

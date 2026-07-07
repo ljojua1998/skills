@@ -159,6 +159,7 @@ Claude Code session; if still missing, check that `.claude/skills/` and
 | `/ship --review "<task>"` | Pause after planning — the plan needs your approval before building starts |
 | `/ship --budget "<task>"` | Economy run: developer/reviewer agents downgraded to Sonnet (planner, verifier and debugger stay on the session model) |
 | `/ship --discover "<idea>"` | Force the discovery interview: 3–5 sharp questions → mini-PRD → then plan (auto-triggers on vague/greenfield requests) |
+| `/ship --loop "<task>"` | Loop-until-done: keep cycling (build → verify → debug → re-verify) until the Definition of Done is fully met — no caps, only progress guards. Without the flag, `/ship` asks at launch which you want |
 | `/retro [EPIC-NNN]` | Post-epic retrospective: distill recurring findings and hard-won facts into steering docs (auto-runs at the end of standard/full ships) |
 | `/devflow-update` | Pull the latest DevFlow from the source repo and reinstall it here |
 | `/ship resume` | Continue an interrupted run from the workboard state |
@@ -236,6 +237,13 @@ with zero open CRITICAL/HIGH findings — that gate is enforced by the `/ship` f
   are `fix(DEV-003): ...`. Full traceability, any stage revertable. Merging and
   pushing stay in your hands (at close, `/ship` *offers* to push and open a PR via
   `gh` with a generated description — it never pushes without your yes).
+- **Loop-until-done (opt-in persistence)** — at launch, `/ship` asks: capped run or
+  loop-until-done? In loop mode the pipeline cycles until the epic's Definition of
+  Done is fully met: blocked tickets escalate (retry → different approach →
+  re-plan/split) instead of parking, and unmet DoD items send the run back to the
+  owning phase. Two guards prevent runaway spend: stop after two consecutive
+  no-progress iterations, hard ceiling of 10 debug cycles — and when a guard fires,
+  it reports exactly what's still open instead of faking done.
 - **Discovery interview** — vague or greenfield requests trigger 3–5 sharp
   questions (users? MVP flows? out of scope? constraints?) before any planning;
   the answers become a mini-PRD in the epic. Building the wrong thing is the most

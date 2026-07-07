@@ -1,7 +1,7 @@
 ---
 name: ship
 description: Full delivery pipeline — takes a feature/project request, plans it into Jira-like markdown tickets, builds each ticket with specialized developer agents, then runs QA, security and code-audit agents, loops a debugger agent over findings until clean, and closes with a final report. Use when the user asks to build a feature or project end-to-end, or invokes /ship.
-argument-hint: "[--quick|--full] [--review] [--budget] [--discover] <what to build> | resume"
+argument-hint: "[--quick|--full] [--review] [--budget] [--discover] [--loop] <what to build> | resume"
 ---
 
 # /ship — One-Command Delivery Pipeline
@@ -45,6 +45,35 @@ This is the default: do NOT downgrade models on your own. Only with the explicit
 override (Agent tool's `model` parameter) — but keep the planner, verifier and
 debugger on the session model even then: plan quality and fix correctness gate
 everything downstream.
+
+## Persistence — loop-until-done (optional)
+
+At the start of every **standard/full** run on a new epic, ask the user with ONE
+AskUserQuestion: **capped run (default) or loop-until-done?** Skip the question when
+`--loop` or `--no-loop` was passed, in quick mode (always capped), and on resume
+(reuse the epic's recorded choice — store it in the epic frontmatter as
+`persistence: capped | loop`).
+
+**Capped** (default): exactly as the phases below are written — one retry per
+ticket, 3 debug iterations, non-converging work is parked as `blocked`.
+
+**Loop-until-done**: the pipeline keeps cycling until the epic's Definition of Done
+is fully met, with these rules replacing the caps:
+
+- **Debug loop**: iterate while confirmed CRITICAL/HIGH findings remain — no fixed
+  cap, but two guards: STOP if two consecutive iterations resolve zero findings
+  (no-progress guard), and an absolute ceiling of 10 iterations (runaway guard).
+- **Blocked tickets escalate instead of parking**: (1) retry the developer agent
+  with the full failure context; (2) retry once more instructing an explicitly
+  different approach; (3) send the ticket back to the planner to re-scope or split
+  it, then build the replacement tickets. Only after all three does it stay blocked.
+- **DoD closes the loop**: after Phase 5's Definition of Done check, any unmet item
+  sends the run back to the phase that owns it (unbuilt → Phase 2, unverified →
+  Phase 3, open findings → Phase 4) instead of closing with caveats.
+- **Visibility**: one status line per cycle (`cycle N: X fixed, Y open, Z tickets
+  left`) so the user can interrupt at any time. When a guard stops the run, report
+  exactly what is still open and why progress stalled — never fake done, never
+  quietly downgrade the goal.
 
 ## Token Discipline (applies to every phase)
 
@@ -135,7 +164,8 @@ successfully — then **commit** that ticket's owned files plus its workboard fi
 `feat(DEV-NNN): <title>` (use `fix:`/`chore:` when the ticket type fits better).
 One ticket = one commit; never `git add -A` while parallel agents are running. If an agent fails or returns incomplete work, retry once with the failure
 context; if it fails again, set status `blocked`, log it, and continue with other
-tickets — report blocked tickets in the final summary.
+tickets — report blocked tickets in the final summary. (In loop mode, blocked
+tickets instead climb the escalation ladder from the Persistence section.)
 
 Update `BOARD.md` activity log after each ticket transition.
 
@@ -167,7 +197,8 @@ refute each CRITICAL/HIGH finding. REFUTED findings are marked disputed in the
 ticket and dropped; CONFIRMED and UNCERTAIN proceed. Skip the filter in quick mode
 and for self-evident findings (broken build, failing test).
 
-While open confirmed CRITICAL/HIGH findings exist (max **3 iterations**):
+While open confirmed CRITICAL/HIGH findings exist (max **3 iterations** in capped
+mode; per the Persistence rules in loop mode):
 1. Set affected tickets to `debugging`.
 2. Group findings by area/file and spawn the **debugger** agent (one per independent
    group, in parallel) with: the findings, the ticket paths, and instruction to
