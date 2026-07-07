@@ -1,0 +1,89 @@
+<svg width="960" height="300" viewBox="0 0 960 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="960" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#141b33"/>
+    </linearGradient>
+    <linearGradient id="title" x1="280" y1="80" x2="680" y2="150" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7dd3fc"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#f0abfc"/>
+    </linearGradient>
+    <linearGradient id="line" x1="120" y1="0" x2="840" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="0.25" stop-color="#818cf8"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="0.75" stop-color="#e879f9"/>
+      <stop offset="1" stop-color="#fb7185"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+    <filter id="softglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="960" height="300" rx="16" fill="url(#bg)"/>
+
+  <!-- ambient orbs -->
+  <circle cx="120" cy="60" r="90" fill="#38bdf8" opacity="0.14" filter="url(#glow)"/>
+  <circle cx="850" cy="240" r="110" fill="#e879f9" opacity="0.12" filter="url(#glow)"/>
+  <circle cx="500" cy="310" r="80" fill="#818cf8" opacity="0.10" filter="url(#glow)"/>
+
+  <!-- dotted grid, left corner -->
+  <g fill="#7dd3fc" opacity="0.25">
+    <circle cx="40" cy="40" r="2"/><circle cx="64" cy="40" r="2"/><circle cx="88" cy="40" r="2"/>
+    <circle cx="40" cy="64" r="2"/><circle cx="64" cy="64" r="2"/><circle cx="88" cy="64" r="2"/>
+    <circle cx="40" cy="88" r="2"/><circle cx="64" cy="88" r="2"/>
+  </g>
+  <!-- dotted grid, right corner -->
+  <g fill="#f0abfc" opacity="0.25">
+    <circle cx="872" cy="48" r="2"/><circle cx="896" cy="48" r="2"/><circle cx="920" cy="48" r="2"/>
+    <circle cx="896" cy="72" r="2"/><circle cx="920" cy="72" r="2"/>
+    <circle cx="920" cy="96" r="2"/>
+  </g>
+
+  <!-- eyebrow -->
+  <text x="480" y="72" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif"
+        font-size="14" font-weight="600" letter-spacing="6" fill="#8b9dc9">AGENTIC DELIVERY SYSTEM · CLAUDE CODE</text>
+
+  <!-- title -->
+  <text x="480" y="146" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif"
+        font-size="72" font-weight="800" letter-spacing="1" fill="url(#title)">DevFlow</text>
+
+  <!-- tagline -->
+  <text x="480" y="182" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif"
+        font-size="17" fill="#aab6d8">One command in. Shipped, verified software out.</text>
+
+  <!-- pipeline -->
+  <g font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600">
+    <line x1="150" y1="238" x2="810" y2="238" stroke="url(#line)" stroke-width="2" opacity="0.55"/>
+
+    <g>
+      <rect x="150" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#38bdf8" stroke-width="1.5"/>
+      <text x="194" y="243" text-anchor="middle" fill="#7dd3fc">PLAN</text>
+    </g>
+    <g>
+      <rect x="288" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#818cf8" stroke-width="1.5"/>
+      <text x="332" y="243" text-anchor="middle" fill="#a5b4fc">BUILD</text>
+    </g>
+    <g>
+      <rect x="426" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="470" y="243" text-anchor="middle" fill="#c4b5fd">VERIFY</text>
+    </g>
+    <g>
+      <rect x="564" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#e879f9" stroke-width="1.5"/>
+      <text x="608" y="243" text-anchor="middle" fill="#f0abfc">DEBUG</text>
+    </g>
+    <g>
+      <rect x="702" y="222" width="108" height="32" rx="16" fill="#0b1020" stroke="#fb7185" stroke-width="1.5"/>
+      <text x="756" y="243" text-anchor="middle" fill="#fda4af">SHIP ✓</text>
+    </g>
+  </g>
+
+  <!-- prompt hint -->
+  <text x="480" y="285" text-anchor="middle" font-family="Consolas, Menlo, monospace"
+        font-size="13" fill="#5c6b94">/ship "build something great"</text>
+</svg>
