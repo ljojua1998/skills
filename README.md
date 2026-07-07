@@ -8,6 +8,7 @@
 ![Agents](https://img.shields.io/badge/agents-12-38bdf8?style=for-the-badge)
 ![Skills](https://img.shields.io/badge/skills-13-34d399?style=for-the-badge)
 ![Dependencies](https://img.shields.io/badge/dependencies-zero-f472b6?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-64748b?style=for-the-badge)
 
 **Plan → Tickets → Build → QA · Security · Audit · Design → Debug → Ship.**
 <br/>A portable agent team you install into any project — driven from one terminal, with one command.
@@ -23,7 +24,7 @@
 > **⚡ Copy, paste, ship** — hover the block and hit the copy button, then run it in your terminal:
 
 ```powershell
-git clone https://github.com/ljojua1998/skills.git; cd skills; .\install.ps1 -Global
+git clone https://github.com/ljojua1998/skills.git; cd skills; powershell -ExecutionPolicy Bypass -File .\install.ps1 -Global
 ```
 
 <details>
@@ -46,8 +47,9 @@ Then open any project and type: &nbsp;`claude` → `/ship "build something great
 git clone https://github.com/ljojua1998/skills.git
 cd skills
 
-# 2. install into your project        (or globally, for every project: .\install.ps1 -Global)
+# 2. install into your project        (or globally, for every project: add -Global)
 .\install.ps1 -Target "C:\path\to\your\project"      # macOS/Linux: ./install.sh /path/to/project
+# blocked by execution policy? →  powershell -ExecutionPolicy Bypass -File .\install.ps1 -Target "..."
 
 # 3. open Claude Code in the project and ship
 cd C:\path\to\your\project
@@ -185,6 +187,7 @@ can resume the pipeline from the board alone.
 | `/ship --full "<task>"` | Maximum rigor — all four reviewers, every phase |
 | `/ship --budget "<task>"` | Economy run — worker agents on Sonnet (planner/verifier/debugger stay on the session model) |
 | `/ship --discover "<idea>"` | Force the discovery interview: questions → mini-PRD → plan |
+| `/ship --dry-run "<task>"` | Plan only: epic + tickets land on the board, nothing gets built — continue later with `resume` |
 | `/ship resume` | Continue an interrupted run from the workboard state |
 | `/board` | Jira-style status view: epics, tickets, open findings, blockers (`add` / `close` / `block` / `priority` subcommands) |
 | `/qa [scope]` | Standalone QA pass on recent changes |
@@ -292,6 +295,26 @@ The pipeline scales its cost to the task instead of running everything always:
 | **Pointers, not payloads** | Delegation prompts carry ticket paths, not pasted file contents; agents write details to ticket files and return ≤10-line summaries; reviewers are scoped to changed files only |
 | **Steering docs + agent memory** | Agents read the project constitution instead of re-exploring the codebase every run; discovered commands and gotchas persist across sessions |
 | **Skip empty phases** | No findings → no verifier, no debugger, no re-verify round |
+
+## 🔧 Per-project options
+
+Drop a `.claude/devflow.json` into a project to set its defaults — flags always win
+over config, config wins over built-ins:
+
+```jsonc
+{
+  "mode": "standard",        // quick | standard | full   — default pipeline mode
+  "persistence": "ask",      // ask | capped | loop       — skip the launch question
+  "budget": false,           // true = always run worker agents on Sonnet
+  "review": false,           // true = always pause for plan approval
+  "discovery": "auto",       // auto | always | never     — the pre-plan interview
+  "pr": "ask",               // ask | never               — offer push + PR at close
+  "language": "en"           // reports in your language ("ka", "de", ...) — board stays English
+}
+```
+
+All keys optional. Example: a production repo might set
+`{ "review": true, "mode": "full" }`; a playground `{ "mode": "quick", "budget": true }`.
 
 ## 📐 Design principles
 

@@ -1,7 +1,7 @@
 ---
 name: ship
 description: Full delivery pipeline — takes a feature/project request, plans it into Jira-like markdown tickets, builds each ticket with specialized developer agents, then runs QA, security and code-audit agents, loops a debugger agent over findings until clean, and closes with a final report. Use when the user asks to build a feature or project end-to-end, or invokes /ship.
-argument-hint: "[--quick|--full] [--review] [--budget] [--discover] [--loop] <what to build> | resume"
+argument-hint: "[--quick|--full] [--review] [--budget] [--discover] [--loop] [--dry-run] <what to build> | resume"
 ---
 
 # /ship — One-Command Delivery Pipeline
@@ -87,6 +87,26 @@ is fully met, with these rules replacing the caps:
 - One debugger spawn per finding-GROUP (grouped by area), not per finding.
 - Skip any phase whose input is empty (no findings → no debugger, no re-verify).
 
+## Project config (optional)
+
+If `.claude/devflow.json` exists in the project, read it first — it sets per-project
+defaults. Explicit flags always override config; config overrides built-in defaults.
+
+```json
+{
+  "mode": "standard",        // quick | standard | full  — default pipeline mode
+  "persistence": "ask",      // ask | capped | loop      — skip the launch question
+  "budget": false,           // true = always run workers on sonnet
+  "review": false,           // true = always pause for plan approval
+  "discovery": "auto",       // auto | always | never
+  "pr": "ask",               // ask | never — offer to push & open a PR at close
+  "language": "en"           // language for user-facing reports (e.g. "ka", "en")
+}
+```
+
+All keys optional. Report to the user in `language` regardless of the language the
+workboard files are written in (tickets/board always stay in English).
+
 ## Phase 0 — Bootstrap
 
 1. If `workboard/` does not exist in the project root, create it:
@@ -138,6 +158,9 @@ When the plan returns:
    (approve / request changes / cancel). On "request changes", re-run the planner
    with the feedback; on approve, commit the workboard (`chore(EPIC-NNN): plan`)
    and continue.
+6. **Exception — `--dry-run` flag**: write the epic + tickets to the workboard
+   (status `backlog`), commit `chore(EPIC-NNN): plan`, show the plan summary, and
+   STOP entirely — no building. The user continues later with `/ship resume`.
 
 ## Phase 2 — Build
 
