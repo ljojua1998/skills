@@ -16,9 +16,26 @@
 
 <br/>
 
-<img src="assets/demo.svg" alt="A live /ship session: plan → build → gate → verify → debug → done" width="88%"/>
+<img src="assets/demo.svg" alt="Install and ship, end to end: clone → install → claude → /ship → verified done" width="88%"/>
 
 </div>
+
+> **⚡ Copy, paste, ship** — hover the block and hit the copy button, then run it in your terminal:
+
+```powershell
+git clone https://github.com/ljojua1998/skills.git; cd skills; .\install.ps1 -Global
+```
+
+<details>
+<summary>macOS / Linux one-liner</summary>
+
+```bash
+git clone https://github.com/ljojua1998/skills.git && cd skills && ./install.sh --global
+```
+
+</details>
+
+Then open any project and type: &nbsp;`claude` → `/ship "build something great"`
 
 ---
 
