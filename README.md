@@ -14,6 +14,10 @@
 
 [Quick start](#-quick-start) · [How it works](#-how-it-works) · [Commands](#-commands) · [The crew](#-the-crew) · [Guarantees](#-hard-guarantees) · [Token efficiency](#-token-efficiency)
 
+<br/>
+
+<img src="assets/demo.svg" alt="A live /ship session: plan → build → gate → verify → debug → done" width="88%"/>
+
 </div>
 
 ---

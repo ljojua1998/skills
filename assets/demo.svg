@@ -1,0 +1,86 @@
+<svg width="820" height="420" viewBox="0 0 820 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tbar" x1="0" y1="0" x2="820" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#151d36"/>
+      <stop offset="1" stop-color="#1a2340"/>
+    </linearGradient>
+    <filter id="winglow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <!-- window glow -->
+  <rect x="14" y="14" width="792" height="392" rx="14" fill="#6d5bd0" opacity="0.25" filter="url(#winglow)"/>
+
+  <!-- terminal window -->
+  <rect x="10" y="10" width="800" height="400" rx="12" fill="#0d1424" stroke="#26335c" stroke-width="1"/>
+
+  <!-- title bar -->
+  <path d="M10 22 Q10 10 22 10 H798 Q810 10 810 22 V46 H10 Z" fill="url(#tbar)"/>
+  <circle cx="32" cy="28" r="6" fill="#fb7185"/>
+  <circle cx="52" cy="28" r="6" fill="#fbbf24"/>
+  <circle cx="72" cy="28" r="6" fill="#34d399"/>
+  <text x="410" y="33" text-anchor="middle" font-family="Consolas, Menlo, monospace" font-size="13" fill="#8b9dc9">devflow — /ship session</text>
+
+  <g font-family="Consolas, Menlo, monospace" font-size="14.5">
+
+    <!-- L1: typed command -->
+    <g>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.02;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="82"><tspan fill="#34d399">❯</tspan><tspan fill="#e2e8f0" xml:space="preserve"> /ship </tspan><tspan fill="#7dd3fc">"build an expense tracker"</tspan></text>
+      <rect y="66" height="24" fill="#0d1424">
+        <animate attributeName="x" values="30;30;372;372" keyTimes="0;0.025;0.135;1" dur="16s" repeatCount="indefinite"/>
+        <animate attributeName="width" values="342;342;0;0" keyTimes="0;0.025;0.135;1" dur="16s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+
+    <!-- L2 -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.163;0.185;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="118"><tspan fill="#a78bfa">🧠 planner</tspan><tspan fill="#94a3b8" xml:space="preserve">  analyzed the request → </tspan><tspan fill="#e2e8f0">6 tickets on the board</tspan></text>
+    </g>
+
+    <!-- L3 -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.25;0.272;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="154"><tspan fill="#818cf8">🔨 build</tspan><tspan fill="#94a3b8" xml:space="preserve">    DEV-001…DEV-006 — </tspan><tspan fill="#e2e8f0">3 agents in parallel</tspan></text>
+    </g>
+
+    <!-- L4 -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.35;0.372;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="190"><tspan fill="#fbbf24">🚦 gate</tspan><tspan fill="#94a3b8" xml:space="preserve">     typecheck </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve">  lint </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve">  tests </tspan><tspan fill="#34d399">42 passing ✓</tspan></text>
+    </g>
+
+    <!-- L5 -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.438;0.46;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="226"><tspan fill="#c4b5fd">🔍 verify</tspan><tspan fill="#94a3b8" xml:space="preserve">   qa </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve">  security </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve">  audit </tspan><tspan fill="#34d399">✓</tspan><tspan fill="#94a3b8" xml:space="preserve">  design </tspan><tspan fill="#34d399">✓</tspan></text>
+    </g>
+
+    <!-- L6 -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.538;0.559;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="262"><tspan fill="#f0abfc">🤨 verifier</tspan><tspan fill="#94a3b8" xml:space="preserve">  3 findings → </tspan><tspan fill="#fb7185">1 confirmed</tspan><tspan fill="#94a3b8">, </tspan><tspan fill="#64748b">2 refuted (false positives)</tspan></text>
+    </g>
+
+    <!-- L7 -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.625;0.647;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="298"><tspan fill="#e879f9">🔧 debugger</tspan><tspan fill="#94a3b8" xml:space="preserve">  root-caused &amp; fixed — re-verified </tspan><tspan fill="#34d399">clean ✓</tspan></text>
+    </g>
+
+    <!-- L8 -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.725;0.747;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="340"><tspan fill="#34d399" font-weight="700">✅ EPIC-001 done</tspan><tspan fill="#94a3b8" xml:space="preserve">  ·  branch </tspan><tspan fill="#7dd3fc">devflow/epic-001</tspan><tspan fill="#94a3b8" xml:space="preserve">  ·  </tspan><tspan fill="#e2e8f0">PR ready to open</tspan></text>
+    </g>
+
+    <!-- idle prompt -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.79;0.81;0.94;0.975" dur="16s" repeatCount="indefinite"/>
+      <text x="30" y="382"><tspan fill="#34d399">❯</tspan><tspan fill="#5c6b94" xml:space="preserve"> </tspan></text>
+      <text x="48" y="382" fill="#7dd3fc">▌<animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></text>
+    </g>
+  </g>
+</svg>

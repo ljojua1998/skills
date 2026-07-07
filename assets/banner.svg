@@ -19,30 +19,53 @@
     <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="28"/>
     </filter>
-    <filter id="softglow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="6"/>
+    <filter id="dotglow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="3"/>
     </filter>
   </defs>
 
   <!-- background -->
   <rect width="960" height="300" rx="16" fill="url(#bg)"/>
 
-  <!-- ambient orbs -->
-  <circle cx="120" cy="60" r="90" fill="#38bdf8" opacity="0.14" filter="url(#glow)"/>
-  <circle cx="850" cy="240" r="110" fill="#e879f9" opacity="0.12" filter="url(#glow)"/>
+  <!-- ambient orbs, breathing -->
+  <circle cx="120" cy="60" r="90" fill="#38bdf8" filter="url(#glow)">
+    <animate attributeName="opacity" values="0.10;0.20;0.10" dur="6s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="850" cy="240" r="110" fill="#e879f9" filter="url(#glow)">
+    <animate attributeName="opacity" values="0.16;0.08;0.16" dur="7s" repeatCount="indefinite"/>
+  </circle>
   <circle cx="500" cy="310" r="80" fill="#818cf8" opacity="0.10" filter="url(#glow)"/>
 
-  <!-- dotted grid, left corner -->
-  <g fill="#7dd3fc" opacity="0.25">
-    <circle cx="40" cy="40" r="2"/><circle cx="64" cy="40" r="2"/><circle cx="88" cy="40" r="2"/>
-    <circle cx="40" cy="64" r="2"/><circle cx="64" cy="64" r="2"/><circle cx="88" cy="64" r="2"/>
-    <circle cx="40" cy="88" r="2"/><circle cx="64" cy="88" r="2"/>
+  <!-- left orbital system (agents orbiting the core) -->
+  <g>
+    <circle cx="100" cy="130" r="6" fill="#a78bfa"/>
+    <circle cx="100" cy="130" r="22" stroke="#38bdf8" stroke-width="1" opacity="0.35"/>
+    <circle cx="100" cy="130" r="38" stroke="#a78bfa" stroke-width="1" opacity="0.25"/>
+    <g>
+      <circle cx="122" cy="130" r="4" fill="#7dd3fc" filter="url(#dotglow)"/>
+      <animateTransform attributeName="transform" type="rotate" from="0 100 130" to="360 100 130" dur="6s" repeatCount="indefinite"/>
+    </g>
+    <g>
+      <circle cx="138" cy="130" r="3.2" fill="#f0abfc" filter="url(#dotglow)"/>
+      <circle cx="62" cy="130" r="2.6" fill="#34d399" filter="url(#dotglow)"/>
+      <animateTransform attributeName="transform" type="rotate" from="360 100 130" to="0 100 130" dur="11s" repeatCount="indefinite"/>
+    </g>
   </g>
-  <!-- dotted grid, right corner -->
-  <g fill="#f0abfc" opacity="0.25">
-    <circle cx="872" cy="48" r="2"/><circle cx="896" cy="48" r="2"/><circle cx="920" cy="48" r="2"/>
-    <circle cx="896" cy="72" r="2"/><circle cx="920" cy="72" r="2"/>
-    <circle cx="920" cy="96" r="2"/>
+
+  <!-- right orbital system, mirrored -->
+  <g>
+    <circle cx="860" cy="130" r="6" fill="#e879f9"/>
+    <circle cx="860" cy="130" r="22" stroke="#e879f9" stroke-width="1" opacity="0.35"/>
+    <circle cx="860" cy="130" r="38" stroke="#fb7185" stroke-width="1" opacity="0.25"/>
+    <g>
+      <circle cx="882" cy="130" r="4" fill="#f0abfc" filter="url(#dotglow)"/>
+      <animateTransform attributeName="transform" type="rotate" from="360 860 130" to="0 860 130" dur="7s" repeatCount="indefinite"/>
+    </g>
+    <g>
+      <circle cx="898" cy="130" r="3.2" fill="#7dd3fc" filter="url(#dotglow)"/>
+      <circle cx="822" cy="130" r="2.6" fill="#fda4af" filter="url(#dotglow)"/>
+      <animateTransform attributeName="transform" type="rotate" from="0 860 130" to="360 860 130" dur="13s" repeatCount="indefinite"/>
+    </g>
   </g>
 
   <!-- eyebrow -->
@@ -61,29 +84,47 @@
   <g font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600">
     <line x1="150" y1="238" x2="810" y2="238" stroke="url(#line)" stroke-width="2" opacity="0.55"/>
 
+    <!-- pulse traveling along the pipeline -->
+    <circle r="5" fill="#ffffff" filter="url(#dotglow)" opacity="0.9">
+      <animateMotion path="M 150 238 H 810" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.9;0.9;0" keyTimes="0;0.05;0.95;1" dur="6s" repeatCount="indefinite"/>
+    </circle>
+
     <g>
-      <rect x="150" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#38bdf8" stroke-width="1.5"/>
+      <rect x="150" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#38bdf8" stroke-width="1.5">
+        <animate attributeName="stroke-width" values="1.5;3;1.5;1.5" keyTimes="0;0.05;0.2;1" dur="6s" repeatCount="indefinite"/>
+      </rect>
       <text x="194" y="243" text-anchor="middle" fill="#7dd3fc">PLAN</text>
     </g>
     <g>
-      <rect x="288" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#818cf8" stroke-width="1.5"/>
+      <rect x="288" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#818cf8" stroke-width="1.5">
+        <animate attributeName="stroke-width" values="1.5;1.5;3;1.5;1.5" keyTimes="0;0.2;0.26;0.4;1" dur="6s" repeatCount="indefinite"/>
+      </rect>
       <text x="332" y="243" text-anchor="middle" fill="#a5b4fc">BUILD</text>
     </g>
     <g>
-      <rect x="426" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#a78bfa" stroke-width="1.5"/>
+      <rect x="426" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#a78bfa" stroke-width="1.5">
+        <animate attributeName="stroke-width" values="1.5;1.5;3;1.5;1.5" keyTimes="0;0.42;0.48;0.62;1" dur="6s" repeatCount="indefinite"/>
+      </rect>
       <text x="470" y="243" text-anchor="middle" fill="#c4b5fd">VERIFY</text>
     </g>
     <g>
-      <rect x="564" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#e879f9" stroke-width="1.5"/>
+      <rect x="564" y="222" width="88" height="32" rx="16" fill="#0b1020" stroke="#e879f9" stroke-width="1.5">
+        <animate attributeName="stroke-width" values="1.5;1.5;3;1.5;1.5" keyTimes="0;0.63;0.69;0.83;1" dur="6s" repeatCount="indefinite"/>
+      </rect>
       <text x="608" y="243" text-anchor="middle" fill="#f0abfc">DEBUG</text>
     </g>
     <g>
-      <rect x="702" y="222" width="108" height="32" rx="16" fill="#0b1020" stroke="#fb7185" stroke-width="1.5"/>
+      <rect x="702" y="222" width="108" height="32" rx="16" fill="#0b1020" stroke="#fb7185" stroke-width="1.5">
+        <animate attributeName="stroke-width" values="1.5;1.5;3.5;1.5" keyTimes="0;0.88;0.96;1" dur="6s" repeatCount="indefinite"/>
+      </rect>
       <text x="756" y="243" text-anchor="middle" fill="#fda4af">SHIP ✓</text>
     </g>
   </g>
 
-  <!-- prompt hint -->
-  <text x="480" y="285" text-anchor="middle" font-family="Consolas, Menlo, monospace"
-        font-size="13" fill="#5c6b94">/ship "build something great"</text>
+  <!-- prompt with blinking cursor -->
+  <g font-family="Consolas, Menlo, monospace" font-size="13">
+    <text x="480" y="285" text-anchor="middle" fill="#5c6b94">/ship "build something great"</text>
+    <text x="592" y="285" fill="#7dd3fc">▌<animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/></text>
+  </g>
 </svg>
