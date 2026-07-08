@@ -33,8 +33,10 @@ fullstack-developer, mobile-developer). You do NOT write feature code.
      sets. List each ticket's owned files/directories in its Technical Notes; if two
      tickets need the same file, add a dependency between them instead.
    - Assign each ticket to exactly one agent type: `frontend-developer`,
-     `backend-developer`, `fullstack-developer`, `mobile-developer`, or
-     `devops-engineer` (for `infra` tickets: Docker, CI/CD, deploy, env config).
+     `backend-developer`, `fullstack-developer`, `mobile-developer`,
+     `web3d-developer` (for `3d` tickets: Three.js/R3F/WebGL scenes, shaders,
+     interactive 3D), or `devops-engineer` (for `infra` tickets: Docker, CI/CD,
+     deploy, env config).
    - Acceptance criteria must be objectively checkable by a QA agent (behavior,
      not implementation: "POST /orders returns 201 and persists the order", not "write OrderService").
    - Include a `Technical Notes` section per ticket: files to touch, contracts
@@ -57,7 +59,7 @@ Return exactly this structure (markdown):
 
 ## Tickets
 ### <ID> — <title>
-- type: frontend|backend|fullstack|mobile|infra
+- type: frontend|backend|fullstack|mobile|3d|infra
 - assignee: <agent>
 - priority: P0|P1|P2|P3
 - depends_on: [<IDs>]

@@ -5,8 +5,8 @@
 <br/>
 
 ![Claude Code](https://img.shields.io/badge/Claude_Code-native-a78bfa?style=for-the-badge&logo=anthropic&logoColor=white)
-![Agents](https://img.shields.io/badge/agents-13-38bdf8?style=for-the-badge)
-![Skills](https://img.shields.io/badge/skills-14-34d399?style=for-the-badge)
+![Agents](https://img.shields.io/badge/agents-14-38bdf8?style=for-the-badge)
+![Skills](https://img.shields.io/badge/skills-15-34d399?style=for-the-badge)
 ![Dependencies](https://img.shields.io/badge/dependencies-zero-f472b6?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-64748b?style=for-the-badge)
 
@@ -207,6 +207,7 @@ can resume the pipeline from the board alone.
 | 🌉 `fullstack-developer` | Vertical slices: contract-first server + client | backend-, frontend-, testing-craft |
 | 📱 `mobile-developer` | RN/Expo/Flutter/native screens, offline, perf | mobile-, frontend-, testing-craft |
 | 🐳 `devops-engineer` | Docker, CI/CD, env config, deploy scripts, health checks | — (standards built in) |
+| 🧊 `web3d-developer` | Three.js / R3F / WebGL scenes, shaders, scroll-driven 3D — striking and frame-budget-disciplined | web3d-, frontend-, testing-craft |
 | 🔍 `qa-engineer` | Executes acceptance criteria + edge probing; severity-ranked findings | testing-craft |
 | 🕸️ `test-engineer` | Codifies acceptance criteria into automated tests, fills coverage gaps, kills flakiness — the regression net grows every epic | testing-craft |
 | 🛡️ `security-auditor` | OWASP-style review of the changed surface; exploit-scenario findings | — |
@@ -219,8 +220,8 @@ can resume the pipeline from the board alone.
 <summary><b>🧩 Knowledge skills — the standards every agent works to (click to expand)</b></summary>
 <br/>
 
-`frontend-craft`, `backend-craft`, `mobile-craft`, `testing-craft`,
-`debugging-craft` — engineering standards preloaded into the relevant agents via
+`frontend-craft`, `backend-craft`, `mobile-craft`, `web3d-craft`,
+`testing-craft`, `debugging-craft` — engineering standards preloaded into the relevant agents via
 the `skills:` frontmatter field: anti-slop design rules, API/layering/database
 patterns, mobile performance and offline discipline, what makes a test worth
 having, and feedback-loop-first debugging.
