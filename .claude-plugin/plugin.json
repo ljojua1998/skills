@@ -1,0 +1,37 @@
+{
+  "name": "devflow",
+  "description": "One-command agentic delivery pipeline: /ship plans, builds, verifies, debugs and ships with a 14-agent crew and enforced quality gates.",
+  "version": "1.0.0",
+  "author": {
+    "name": "ljojua1998"
+  },
+  "homepage": "https://ljojua1998.github.io/skills/",
+  "repository": "https://github.com/ljojua1998/skills",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "orchestration",
+    "delivery-pipeline",
+    "qa",
+    "security-audit",
+    "testing",
+    "workflow"
+  ],
+  "skills": "./.claude/skills/",
+  "agents": [
+    "./.claude/agents/planner.md",
+    "./.claude/agents/frontend-developer.md",
+    "./.claude/agents/backend-developer.md",
+    "./.claude/agents/fullstack-developer.md",
+    "./.claude/agents/mobile-developer.md",
+    "./.claude/agents/web3d-developer.md",
+    "./.claude/agents/devops-engineer.md",
+    "./.claude/agents/qa-engineer.md",
+    "./.claude/agents/security-auditor.md",
+    "./.claude/agents/code-auditor.md",
+    "./.claude/agents/design-reviewer.md",
+    "./.claude/agents/test-engineer.md",
+    "./.claude/agents/verifier.md",
+    "./.claude/agents/debugger.md"
+  ]
+}

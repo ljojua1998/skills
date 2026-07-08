@@ -21,7 +21,15 @@
 
 </div>
 
-> **⚡ Copy, paste, ship** — hover the block and hit the copy button, then run it in your terminal:
+> **⚡ Easiest install — plugin marketplace** (inside Claude Code, no cloning):
+>
+> ```text
+> /plugin marketplace add ljojua1998/skills
+> ```
+>
+> then pick **devflow** in `/plugin` → Install. All 14 agents and 15 skills load everywhere.
+
+> **⚡ Or copy, paste, ship** — hover the block and hit the copy button, then run it in your terminal:
 
 ```powershell
 git clone https://github.com/ljojua1998/skills.git; cd skills; powershell -ExecutionPolicy Bypass -File .\install.ps1 -Global

@@ -1,0 +1,38 @@
+{
+  "name": "devflow",
+  "owner": {
+    "name": "ljojua1998"
+  },
+  "metadata": {
+    "description": "DevFlow — one-command agentic delivery pipeline for Claude Code: plan, tickets, parallel build, QA + security + design review, adversarial verification, debug loop, ship.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "devflow",
+      "source": "./",
+      "description": "A whole delivery team in one command. /ship plans your request into Jira-like tickets, builds them with 14 specialist agents in parallel, enforces a red-tests-can't-finish quality gate, runs QA/security/design/code review with adversarial finding verification, debugs until clean, and hands you a branch. State-on-disk workboard, run ledger, loop-until-done mode, per-project config.",
+      "version": "1.0.0",
+      "author": {
+        "name": "ljojua1998"
+      },
+      "homepage": "https://ljojua1998.github.io/skills/",
+      "repository": "https://github.com/ljojua1998/skills",
+      "license": "MIT",
+      "keywords": [
+        "agents",
+        "orchestration",
+        "delivery-pipeline",
+        "qa",
+        "security-audit",
+        "code-review",
+        "testing",
+        "kanban",
+        "workflow",
+        "fullstack"
+      ],
+      "category": "productivity",
+      "strict": false
+    }
+  ]
+}
