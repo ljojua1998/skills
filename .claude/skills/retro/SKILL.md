@@ -8,10 +8,11 @@ argument-hint: "[EPIC-NNN]"
 
 1. **Pick the epic**: from `$ARGUMENTS`, or the most recently closed epic in
    `workboard/epics/`. If none is closed, say so and stop.
-2. **Spawn one general-purpose agent** with the epic + its ticket paths and this
-   contract:
-   > Read the epic and every ticket (implementation logs, all findings sections,
-   > debug logs). Extract only DURABLE lessons — things that will change how the
+2. **Spawn one general-purpose agent** with the epic + its ticket paths + the run
+   ledger (`workboard/runs/EPIC-NNN.md`, if present) and this contract:
+   > Read the epic, every ticket (implementation logs, all findings sections,
+   > debug logs) and the run ledger (cycle history, escalations, drift fixes,
+   > guard stops). Extract only DURABLE lessons — things that will change how the
    > next epic in this project runs:
    > - Recurring finding classes (same mistake ≥2 times) → a concrete rule worth
    >   adding to `workboard/steering/conventions.md`.
