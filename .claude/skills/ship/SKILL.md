@@ -69,9 +69,10 @@ Rules:
   tickets done, commits, findings found/fixed). For exact token cost, remind the
   user once per run — at the first pulse — that `/cost` (and Esc to pause safely +
   `/ship resume`) are available at any time.
-- Mirror every pulse into `BOARD.md`'s **Now** line (replace, don't append) and
-  add one activity-log entry — so a second terminal watching `/board` sees live
-  state.
+- Mirror every pulse into `BOARD.md`'s **Now** line (replace, don't append), add
+  one activity-log entry, and append one line to the epic's run ledger
+  (`workboard/runs/EPIC-NNN.md`) — so a second terminal watching `/board` sees
+  live state and the run leaves a durable trace.
 - Estimate honestly: if you can't predict remaining time, say what remains in
   work units ("2 tickets + verify + debug"), not a made-up ETA.
 
@@ -103,6 +104,15 @@ is fully met, with these rules replacing the caps:
   left`) so the user can interrupt at any time. When a guard stops the run, report
   exactly what is still open and why progress stalled — never fake done, never
   quietly downgrade the goal.
+- **Escalation triggers — autonomous, not blind.** Even in loop mode, PAUSE the
+  loop and ask the user (AskUserQuestion, with full context) before:
+  destructive schema migrations (dropping tables/columns with data),
+  changes to auth/session/crypto/payment code beyond the ticket's stated scope,
+  deleting or rewriting more than ~10 files in one step,
+  major-version dependency upgrades,
+  and anything matching the config's `escalate` globs.
+  Log every escalation (and the user's decision) in the run ledger. These
+  triggers apply in capped mode too — they gate riskiness, not persistence.
 
 ## Token Discipline (applies to every phase)
 
@@ -129,7 +139,13 @@ defaults. Explicit flags always override config; config overrides built-in defau
   "review": false,           // true = always pause for plan approval
   "discovery": "auto",       // auto | always | never
   "pr": "ask",               // ask | never — offer to push & open a PR at close
-  "language": "en"           // language for user-facing reports (e.g. "ka", "en")
+  "language": "en",          // language for user-facing reports (e.g. "ka", "en")
+  "limits": {                // hard run guardrails (loop mode respects these too)
+    "maxDebugCycles": 10,
+    "maxAgentsPerRun": 40
+  },
+  "escalate": []             // extra escalation triggers (see Persistence), e.g.
+                             // ["src/payments/**", "prisma/migrations/**"]
 }
 ```
 
@@ -144,7 +160,10 @@ workboard files are written in (tickets/board always stay in English).
    (Epic/ticket file formats: `${CLAUDE_SKILL_DIR}/templates/EPIC-template.md` and
    `TICKET-template.md`.)
 2. Read `workboard/BOARD.md` to find the highest existing `EPIC-` and `DEV-` numbers
-   and continue numbering from there.
+   and continue numbering from there. Create this run's ledger at
+   `workboard/runs/EPIC-NNN.md` (heading + start entry) — the run ledger is the
+   append-only trace of the run: one line per phase transition, agent result,
+   cycle, decision, and escalation. `/ship resume` and `/retro` read it.
 3. **Steering docs.** If `workboard/steering/tech.md` is missing (and the project has
    any existing code), spawn one Explore agent to write `workboard/steering/`:
    `tech.md` (stack, how to run/build/test/lint, structure map), `conventions.md`
@@ -293,5 +312,12 @@ mode; per the Persistence rules in loop mode):
 ## Resuming
 
 If invoked while a board already has non-`done` tickets and the user says
-`/ship resume` (or the request clearly refers to the existing epic), do not re-plan:
-read the board, determine the current phase from ticket statuses, and continue from there.
+`/ship resume` (or the request clearly refers to the existing epic), do not re-plan.
+
+**Integrity check first (drift detection):** before continuing, reconcile three
+sources — ticket frontmatter statuses, `git log` (which tickets actually have
+commits), and the run ledger's last entries. Common drift: a ticket marked
+`in_progress` whose agent died (no commit, no ledger completion) → reset to
+`backlog`; work committed but ticket still `in_progress` → verify and advance to
+`built`. Fix the drift, log what you fixed in the ledger, THEN continue from the
+phase the reconciled state implies.

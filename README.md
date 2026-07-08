@@ -195,6 +195,7 @@ can resume the pipeline from the board alone.
 | `/debug-findings` | Fix open findings from any review |
 | `/tests [coverage \| e2e "<flow>" \| flaky]` | Strengthen the test suite: fill coverage gaps, build an E2E journey, or stabilize flaky tests |
 | `/retro [EPIC-NNN]` | Distill the epic's lessons into steering docs (auto-runs on standard/full ships) |
+| `/patrol [deps\|tests\|security\|board]` | Report-only health sweep: vuln audit, flaky tests, security quick-scan, board grooming. Proposes tickets, never changes code — safe to schedule (`/loop 1d /patrol`) |
 | `/devflow-update` | Pull the latest DevFlow from this repo and reinstall |
 
 ## 🤖 The crew
@@ -270,6 +271,15 @@ CRITICAL/HIGH findings — that gate is enforced by the `/ship` flow.
   re-plan/split), unmet DoD items send the run back to the owning phase. Guards:
   stop after two no-progress iterations, hard ceiling of 10 cycles — and a guard
   firing means an honest "here's what's still open", never a fake "done".
+- 🚨 **Autonomous, not blind** — even in loop mode, risky moves pause the loop and
+  ask you first: destructive migrations, auth/payment code beyond ticket scope,
+  mass deletions, major dependency upgrades, plus any paths you list under
+  `escalate` in the config. Every escalation and decision lands in the run ledger.
+- 📜 **Run ledger + drift detection** — every run writes an append-only trace
+  (`workboard/runs/EPIC-NNN.md`): phases, agent results, cycles, escalations.
+  `/ship resume` reconciles ticket statuses against git history and the ledger
+  before continuing — a died agent can't leave a ghost `in_progress` ticket, and
+  `/retro` learns from the full cycle history, not just the end state.
 - 🎤 **Discovery interview** — vague or greenfield requests trigger 3–5 sharp
   questions before any planning; the answers become a mini-PRD in the epic.
   Building the wrong thing is the most expensive failure mode — this kills it at
@@ -317,7 +327,9 @@ over config, config wins over built-ins:
   "review": false,           // true = always pause for plan approval
   "discovery": "auto",       // auto | always | never     — the pre-plan interview
   "pr": "ask",               // ask | never               — offer push + PR at close
-  "language": "en"           // reports in your language ("ka", "de", ...) — board stays English
+  "language": "en",          // reports in your language ("ka", "de", ...) — board stays English
+  "limits": { "maxDebugCycles": 10, "maxAgentsPerRun": 40 },   // hard run guardrails
+  "escalate": ["src/payments/**"]   // paths that always pause the loop and ask you
 }
 ```
 
