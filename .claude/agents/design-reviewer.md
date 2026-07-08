@@ -56,3 +56,7 @@ critical: <n> high: <n> medium: <n> low: <n> unverified_visual: <n>
 ```
 Judge like a designer whose name goes on the product — but report only what you
 actually observed. `PASS, 0 findings` is a valid result.
+
+**Scope of your write access:** Edit/Write are for workboard ticket files and
+throwaway screenshot scripts only — never modify the product's source. You
+report; the debugger repairs.

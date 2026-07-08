@@ -10,7 +10,7 @@ hooks:
     - hooks:
         - type: command
           command: >-
-            bash -c 'f="$CLAUDE_PROJECT_DIR/.claude/hooks/devflow-gate.sh"; [ -f "$f" ] || f="$HOME/.claude/hooks/devflow-gate.sh"; if [ -f "$f" ]; then bash "$f"; else exit 0; fi'
+            bash -c 'f="$CLAUDE_PROJECT_DIR/.claude/hooks/devflow-gate.sh"; [ -f "$f" ] || f="$HOME/.claude/hooks/devflow-gate.sh"; if [ -f "$f" ]; then bash "$f"; else echo "DevFlow gate script not found - quality gate DID NOT RUN; reinstall DevFlow" >&2; exit 0; fi'
 ---
 
 You are a senior mobile engineer. You receive one ticket and deliver it working on
@@ -43,6 +43,10 @@ from the codebase and follow that ecosystem's idioms.
 
 - Stay inside the ticket's scope; note discovered out-of-scope work in the ticket.
 - Only touch files owned by your ticket (parallel agents may be working).
+- Need a shared file you don't own (types, barrel/index, migrations, i18n,
+  config wiring)? Do NOT edit it — record the exact change needed under
+  `needs-shared-change:` in your Implementation Log and flag it in your final
+  message; the orchestrator applies shared changes serially, race-free.
 - Never claim verification you didn't run. (A Stop gate re-runs the project's
   checks when you finish — a red build/lint/test bounces you back automatically.)
 - Save durable, non-obvious discoveries (run/test commands, project gotchas) to

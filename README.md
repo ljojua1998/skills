@@ -7,7 +7,7 @@
 ![Claude Code](https://img.shields.io/badge/Claude_Code-native-a78bfa?style=for-the-badge&logo=anthropic&logoColor=white)
 ![Agents](https://img.shields.io/badge/agents-14-38bdf8?style=for-the-badge)
 ![Skills](https://img.shields.io/badge/skills-15-34d399?style=for-the-badge)
-![Dependencies](https://img.shields.io/badge/dependencies-zero-f472b6?style=for-the-badge)
+![Footprint](https://img.shields.io/badge/footprint-markdown_+_bash-f472b6?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-64748b?style=for-the-badge)
 
 **Plan → Tickets → Build → QA · Security · Audit · Design → Debug → Ship.**
@@ -261,7 +261,10 @@ CRITICAL/HIGH findings — that gate is enforced by the `/ship` flow.
   hook (`.claude/hooks/devflow-gate.sh`) that runs the project's typecheck/lint/
   tests when the agent tries to finish. Red checks bounce the agent back
   automatically — *"done with failing tests" is structurally impossible*, not just
-  discouraged. Auto-detects npm/pnpm/yarn/bun, Cargo, Go and Python projects.
+  discouraged. Covers npm/pnpm/yarn/bun, Flutter/Dart, Cargo, Go, Gradle, Maven,
+  .NET, PHP (phpunit), Ruby and Python stacks. Honest caveats: it runs via Git
+  Bash (the installer warns if bash is missing), and on an uncovered stack it
+  prints a loud "gate did not verify this work" notice instead of staying silent.
 - 🤨 **Adversarial verification** — every CRITICAL/HIGH finding faces the
   `verifier` (skeptic) agent, which tries to refute it against the real code.
   Refuted findings are dropped as disputed; only confirmed issues cost a debug cycle.
@@ -347,7 +350,9 @@ All keys optional. Example: a production repo might set
   never marks a finding fixed without a red→green signal; blocked items are
   reported, not hidden.
 - **Native primitives only.** Pure Claude Code agents + skills + hooks — no
-  external frameworks, daemons, or npm dependencies to break.
+  external frameworks, daemons, or npm dependencies to break. What it does rely
+  on: git, Git Bash on Windows (quality gate), your project's own toolchain for
+  the gate's checks, and optionally Playwright (visual review) and `gh` (PRs).
 
 <details>
 <summary><b>🎨 Customizing (click to expand)</b></summary>

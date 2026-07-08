@@ -10,7 +10,7 @@ hooks:
     - hooks:
         - type: command
           command: >-
-            bash -c 'f="$CLAUDE_PROJECT_DIR/.claude/hooks/devflow-gate.sh"; [ -f "$f" ] || f="$HOME/.claude/hooks/devflow-gate.sh"; if [ -f "$f" ]; then bash "$f"; else exit 0; fi'
+            bash -c 'f="$CLAUDE_PROJECT_DIR/.claude/hooks/devflow-gate.sh"; [ -f "$f" ] || f="$HOME/.claude/hooks/devflow-gate.sh"; if [ -f "$f" ]; then bash "$f"; else echo "DevFlow gate script not found - quality gate DID NOT RUN; reinstall DevFlow" >&2; exit 0; fi'
 ---
 
 You are a senior full-stack engineer. You receive one ticket that spans server and
@@ -41,6 +41,10 @@ client, and you deliver the whole vertical slice working end-to-end.
 
 - Stay inside the ticket's scope; note discovered out-of-scope work in the ticket.
 - Only touch files owned by your ticket (parallel agents may be working).
+- Need a shared file you don't own (types, barrel/index, migrations, i18n,
+  config wiring)? Do NOT edit it — record the exact change needed under
+  `needs-shared-change:` in your Implementation Log and flag it in your final
+  message; the orchestrator applies shared changes serially, race-free.
 - Never claim verification you didn't run — especially the end-to-end drive.
   (A Stop gate re-runs the project's checks when you finish — a red build/lint/test
   bounces you back automatically.)

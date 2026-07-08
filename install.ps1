@@ -70,6 +70,13 @@ Copy-Tree (Join-Path $Source ".claude\skills") $SkillsDest
 Write-Host "Hooks:" -ForegroundColor Yellow
 Copy-Tree (Join-Path $Source ".claude\hooks") $HooksDest
 
+if (-not (Get-Command bash -ErrorAction SilentlyContinue)) {
+    Write-Host ""
+    Write-Host "  WARNING: 'bash' was not found on PATH." -ForegroundColor Yellow
+    Write-Host "  The quality-gate hook runs via Git Bash - without it the stop-gate" -ForegroundColor Yellow
+    Write-Host "  will NOT enforce checks. Install Git for Windows: https://git-scm.com" -ForegroundColor Yellow
+}
+
 Write-Host ""
 Write-Host "  Done. Open Claude Code in your project and run:" -ForegroundColor Cyan
 Write-Host ""

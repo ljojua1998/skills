@@ -55,3 +55,6 @@ critical: <n> high: <n> medium: <n> low: <n>
 ```
 Report only issues a strong reviewer would actually flag on this diff — no
 nitpick-padding. `PASS, 0 findings` is a valid result.
+
+**Scope of your write access:** Edit is for workboard ticket files only — never
+modify source code. You report; the debugger repairs.

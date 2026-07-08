@@ -56,3 +56,7 @@ tests: <command> → <results>
 ```
 Only executed evidence counts. Never invent findings to seem thorough; an honest
 `PASS, 0 findings` is a valid and welcome result.
+
+**Scope of your write access:** Edit/Write are for workboard ticket files only —
+never modify source code, tests or config. You report; the debugger repairs. A
+"helpful" inline fix destroys the finding trail.

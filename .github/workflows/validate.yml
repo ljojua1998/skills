@@ -1,0 +1,64 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shell scripts parse
+        run: |
+          bash -n .claude/hooks/devflow-gate.sh
+          bash -n install.sh
+
+      - name: PowerShell scripts parse
+        shell: pwsh
+        run: |
+          foreach ($f in @("install.ps1", ".claude/hooks/devflow-gate.ps1")) {
+            $errs = $null
+            [System.Management.Automation.PSParser]::Tokenize((Get-Content $f -Raw), [ref]$errs) | Out-Null
+            if ($errs.Count -gt 0) { Write-Error "Parse errors in ${f}: $($errs | Out-String)"; exit 1 }
+          }
+
+      - name: Agent and skill frontmatter present
+        run: |
+          set -e
+          check() {
+            head -1 "$1" | grep -qx -- "---" || { echo "no frontmatter: $1"; exit 1; }
+            fm=$(awk '/^---$/{c++; next} c==1' "$1")
+            echo "$fm" | grep -q "^name:" || { echo "missing name: $1"; exit 1; }
+            echo "$fm" | grep -q "^description:" || { echo "missing description: $1"; exit 1; }
+          }
+          for f in .claude/agents/*.md; do check "$f"; done
+          for f in .claude/skills/*/SKILL.md; do check "$f"; done
+          echo "frontmatter OK: $(ls .claude/agents/*.md | wc -l) agents, $(ls -d .claude/skills/*/ | wc -l) skills"
+
+      - name: Agent skill references resolve
+        run: |
+          set -e
+          for f in .claude/agents/*.md; do
+            refs=$(awk '/^---$/{c++; next} c==1' "$f" | grep "^skills:" | tr -d "skills:[] " | tr "," "\n" | sed '/^$/d') || true
+            for r in $refs; do
+              [ -f ".claude/skills/$r/SKILL.md" ] || { echo "$f references missing skill: $r"; exit 1; }
+            done
+          done
+          echo "all agent skill references resolve"
+
+      - name: Landing page JS syntax
+        run: |
+          node -e "
+            const m = require('fs').readFileSync('docs/index.html','utf8').match(/<script>([\s\S]*)<\/script>/);
+            if (!m) { console.error('no inline script found'); process.exit(1); }
+            require('fs').writeFileSync('/tmp/landing.js', m[1]);
+          "
+          node --check /tmp/landing.js
+
+      - name: SVGs well-formed
+        run: |
+          sudo apt-get install -y -q libxml2-utils > /dev/null
+          xmllint --noout assets/*.svg

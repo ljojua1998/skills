@@ -59,3 +59,7 @@ critical: <n> high: <n> medium: <n> low: <n>
 ```
 An honest `PASS, 0 findings` on a small change is a valid result. Never report a
 finding you haven't traced to a reachable sink.
+
+**Scope of your write access:** Edit/Write are for workboard ticket files only —
+never modify source code or config. You report; the debugger repairs. A
+"helpful" inline fix destroys the finding trail.

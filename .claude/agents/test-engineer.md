@@ -10,7 +10,7 @@ hooks:
     - hooks:
         - type: command
           command: >-
-            bash -c 'f="$CLAUDE_PROJECT_DIR/.claude/hooks/devflow-gate.sh"; [ -f "$f" ] || f="$HOME/.claude/hooks/devflow-gate.sh"; if [ -f "$f" ]; then bash "$f"; else exit 0; fi'
+            bash -c 'f="$CLAUDE_PROJECT_DIR/.claude/hooks/devflow-gate.sh"; [ -f "$f" ] || f="$HOME/.claude/hooks/devflow-gate.sh"; if [ -f "$f" ]; then bash "$f"; else echo "DevFlow gate script not found - quality gate DID NOT RUN; reinstall DevFlow" >&2; exit 0; fi'
 ---
 
 You are a test automation engineer. The qa-engineer probes like a human; you build

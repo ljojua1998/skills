@@ -2,6 +2,13 @@
 name: ship
 description: Full delivery pipeline — takes a feature/project request, plans it into Jira-like markdown tickets, builds each ticket with specialized developer agents, then runs QA, security and code-audit agents, loops a debugger agent over findings until clean, and closes with a final report. Use when the user asks to build a feature or project end-to-end, or invokes /ship.
 argument-hint: "[--quick|--full] [--review] [--budget] [--discover] [--loop] [--dry-run] <what to build> | resume"
+hooks:
+  PreToolUse:
+    - matcher: Bash
+      hooks:
+        - type: command
+          command: >-
+            bash -c 'in=$(cat); printf %s "$in" | grep -qE "git add (-A|--all|\.)( |$)|git push [^|;&]*(--force|-f )" && { echo "DevFlow guard: blocked - stage files explicitly (one ticket = one commit); never force-push" >&2; exit 2; }; exit 0'
 ---
 
 # /ship — One-Command Delivery Pipeline
@@ -233,10 +240,19 @@ For each ticket, spawn the agent named in `assignee` (`frontend-developer`,
 Per ticket: set status `in_progress` before spawning, `built` when the agent returns
 successfully — then **commit** that ticket's owned files plus its workboard files:
 `feat(DEV-NNN): <title>` (use `fix:`/`chore:` when the ticket type fits better).
-One ticket = one commit; never `git add -A` while parallel agents are running. If an agent fails or returns incomplete work, retry once with the failure
+One ticket = one commit; never `git add -A` while parallel agents are running
+(a PreToolUse guard blocks it anyway). If an agent fails or returns incomplete work, retry once with the failure
 context; if it fails again, set status `blocked`, log it, and continue with other
 tickets — report blocked tickets in the final summary. (In loop mode, blocked
 tickets instead climb the escalation ladder from the Persistence section.)
+
+**Shared-file requests.** Agents are forbidden from editing files outside their
+ownership; instead they return `needs-shared-change` notes (shared types,
+barrel/index files, migrations, i18n). Queue these; after the current parallel
+wave completes, apply them **serially**: spawn one short follow-up agent that owns
+exactly those shared files (batch all queued changes into it), gate it, and commit
+as `chore(DEV-NNN): shared wiring`. Never let two parallel agents touch the same
+file — this is the race that loses edits.
 
 Update `BOARD.md` activity log after each ticket transition.
 

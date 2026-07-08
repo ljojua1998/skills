@@ -38,4 +38,6 @@ working, verified infrastructure — not YAML that "should work".
 - Never commit or print secret values; reference them by name.
 - Destructive operations against live environments (deleting services/volumes/
   data, force-pushes) are out of scope — flag them for the human instead.
-- Stay inside the ticket's scope; only touch files owned by your ticket.
+- Stay inside the ticket's scope; only touch files owned by your ticket. Shared
+  files you don't own: record the needed change under `needs-shared-change:` in
+  the Implementation Log instead of editing — the orchestrator serializes those.
