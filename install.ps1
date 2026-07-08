@@ -74,7 +74,17 @@ if (-not (Get-Command bash -ErrorAction SilentlyContinue)) {
     Write-Host ""
     Write-Host "  WARNING: 'bash' was not found on PATH." -ForegroundColor Yellow
     Write-Host "  The quality-gate hook runs via Git Bash - without it the stop-gate" -ForegroundColor Yellow
-    Write-Host "  will NOT enforce checks. Install Git for Windows: https://git-scm.com" -ForegroundColor Yellow
+    Write-Host "  will NOT enforce checks." -ForegroundColor Yellow
+    $git = Get-Command git -ErrorAction SilentlyContinue
+    $bashDir = $null
+    if ($git) { $candidate = Join-Path (Split-Path (Split-Path $git.Source)) "bin"; if (Test-Path (Join-Path $candidate "bash.exe")) { $bashDir = $candidate } }
+    if ($bashDir) {
+        Write-Host "  Git Bash found at: $bashDir" -ForegroundColor Yellow
+        Write-Host "  Fix it with this one-liner (then restart your terminal):" -ForegroundColor Yellow
+        Write-Host "    [Environment]::SetEnvironmentVariable('Path', [Environment]::GetEnvironmentVariable('Path','User') + ';$bashDir', 'User')" -ForegroundColor White
+    } else {
+        Write-Host "  Install Git for Windows: https://git-scm.com" -ForegroundColor Yellow
+    }
 }
 
 Write-Host ""

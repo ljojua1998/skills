@@ -8,7 +8,7 @@ hooks:
       hooks:
         - type: command
           command: >-
-            bash -c 'in=$(cat); printf %s "$in" | grep -qE "git add (-A|--all|\.)( |$)|git push [^|;&]*(--force|-f )" && { echo "DevFlow guard: blocked - stage files explicitly (one ticket = one commit); never force-push" >&2; exit 2; }; exit 0'
+            bash -c 'in=$(cat); printf %s "$in" | grep -qE "git add (-A|--all|\.)( |\"|$)|git push [^|;&]*(--force|-f)( |\"|$)" && { echo "DevFlow guard: blocked - stage files explicitly (one ticket = one commit); never force-push" >&2; exit 2; }; exit 0'
 ---
 
 # /ship — One-Command Delivery Pipeline

@@ -1,0 +1,36 @@
+{
+  "name": "devflow-cc",
+  "version": "1.0.0",
+  "description": "One-command installer for DevFlow — the agentic delivery pipeline for Claude Code: 14 specialist agents, 15 skills, enforced quality gates. npx devflow-cc init",
+  "bin": {
+    "devflow-cc": "bin/devflow.js"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ljojua1998/skills.git"
+  },
+  "homepage": "https://ljojua1998.github.io/skills/",
+  "bugs": {
+    "url": "https://github.com/ljojua1998/skills/issues"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "agents",
+    "ai",
+    "orchestration",
+    "delivery-pipeline",
+    "qa",
+    "code-review",
+    "devflow"
+  ],
+  "author": "ljojua1998",
+  "license": "MIT"
+}

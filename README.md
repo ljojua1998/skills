@@ -28,6 +28,8 @@
 > ```
 >
 > then pick **devflow** in `/plugin` → Install. All 14 agents and 15 skills load everywhere.
+>
+> **Or via npx** (any terminal): `npx devflow-cc init` — into the current project, `--global` for every project.
 
 > **⚡ Or copy, paste, ship** — hover the block and hit the copy button, then run it in your terminal:
 
