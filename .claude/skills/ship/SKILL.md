@@ -200,8 +200,8 @@ Subagents don't see the conversation: each delegation prompt must be self-contai
 (ticket path + how to run the project + anything else it needs).
 
 For each ticket, spawn the agent named in `assignee` (`frontend-developer`,
-`backend-developer`, `fullstack-developer`, `mobile-developer`, or
-`devops-engineer`) with this contract:
+`backend-developer`, `fullstack-developer`, `mobile-developer`,
+`web3d-developer`, or `devops-engineer`) with this contract:
 
 > Read your ticket at `workboard/tickets/<file>`. Implement it fully in this codebase,
 > following the project's existing conventions and your craft standards. Then:
