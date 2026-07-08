@@ -13,7 +13,7 @@
 **Plan → Tickets → Build → QA · Security · Audit · Design → Debug → Ship.**
 <br/>A portable agent team you install into any project — driven from one terminal, with one command.
 
-[Quick start](#-quick-start) · [How it works](#-how-it-works) · [Commands](#-commands) · [The crew](#-the-crew) · [Guarantees](#-hard-guarantees) · [Token efficiency](#-token-efficiency)
+**[🌐 Landing page](https://ljojua1998.github.io/skills/)** · [Quick start](#-quick-start) · [How it works](#-how-it-works) · [Commands](#-commands) · [The crew](#-the-crew) · [Guarantees](#-hard-guarantees) · [Token efficiency](#-token-efficiency)
 
 <br/>
 

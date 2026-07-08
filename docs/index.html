@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevFlow — One command. A whole delivery team.</title>
+<meta name="description" content="DevFlow turns one Claude Code command into a full delivery pipeline: plan, tickets, parallel build, QA + security + design review, debug loop, ship.">
+<meta property="og:title" content="DevFlow — Agentic Delivery for Claude Code">
+<meta property="og:description" content="One command in. Shipped, verified software out. 14 agents, 15 skills, zero dependencies.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>◆</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#070b16; --panel:#0d1424; --panel2:#111a30; --line:#26335c; --line-soft:#1a2340;
+    --text:#e2e8f0; --muted:#8b9dc9; --dim:#5c6b94;
+    --cyan:#7dd3fc; --violet:#a78bfa; --pink:#f0abfc; --green:#34d399; --amber:#fbbf24; --red:#fb7185; --indigo:#818cf8;
+    --grad:linear-gradient(100deg,var(--cyan),var(--violet) 50%,var(--pink));
+    --display:"Bricolage Grotesque",sans-serif; --body:"IBM Plex Sans",sans-serif; --mono:"JetBrains Mono",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--text);font-family:var(--body);line-height:1.6;overflow-x:hidden}
+  ::selection{background:var(--violet);color:var(--ink)}
+  a{color:var(--cyan);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* ambient background */
+  .sky{position:fixed;inset:0;z-index:-1;overflow:hidden}
+  .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.13}
+  .orb.a{width:520px;height:520px;background:var(--cyan);top:-180px;left:-120px}
+  .orb.b{width:620px;height:620px;background:var(--pink);top:30%;right:-260px}
+  .orb.c{width:460px;height:460px;background:var(--indigo);bottom:-200px;left:30%}
+
+  /* nav */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+  .logo{font-family:var(--display);font-weight:800;font-size:1.25rem;letter-spacing:.02em;color:var(--text)}
+  .logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .nav-links{display:flex;gap:26px;align-items:center;font-size:.92rem}
+  .nav-links a{color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+  .gh-btn{border:1px solid var(--line);border-radius:8px;padding:8px 16px;color:var(--text)!important;font-family:var(--mono);font-size:.85rem;transition:border-color .2s,background .2s}
+  .gh-btn:hover{border-color:var(--violet);background:var(--panel)}
+
+  /* hero */
+  .hero{padding:64px 0 40px;text-align:center}
+  .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.35em;color:var(--dim);text-transform:uppercase}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(2.5rem,6.5vw,4.6rem);line-height:1.04;letter-spacing:-.015em;margin:20px auto 22px;max-width:850px}
+  h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:1.12rem;max-width:640px;margin:0 auto 34px}
+  .sub b{color:var(--text);font-weight:600}
+
+  .install{display:inline-flex;align-items:center;gap:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:100%;box-shadow:0 0 60px rgba(167,139,250,.12)}
+  .install code{font-family:var(--mono);font-size:.84rem;color:var(--cyan);padding:15px 20px;white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+  .install code::-webkit-scrollbar{display:none}
+  .install code .p{color:var(--green)}
+  .copy-btn{flex-shrink:0;border:none;border-left:1px solid var(--line);background:var(--panel2);color:var(--muted);font-family:var(--mono);font-size:.8rem;padding:15px 18px;cursor:pointer;transition:color .2s,background .2s}
+  .copy-btn:hover{color:var(--text);background:var(--line-soft)}
+  .copy-btn.done{color:var(--green)}
+  .hero-note{margin-top:14px;font-size:.85rem;color:var(--dim)}
+  .hero-note a{color:var(--muted);border-bottom:1px dotted var(--dim)}
+
+  /* ===== THE THEATER ===== */
+  .theater{margin:56px 0 30px;display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch;text-align:left}
+  .term,.board{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .bar{display:flex;align-items:center;gap:8px;background:var(--line-soft);padding:11px 16px;border-bottom:1px solid var(--line)}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .bar-title{margin-left:auto;margin-right:auto;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+  .term-body{font-family:var(--mono);font-size:.83rem;line-height:2.05;padding:18px 20px;min-height:360px;flex:1}
+  .term-body .row{opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s}
+  .term-body .row.on{opacity:1;transform:none}
+  .pr{color:var(--green)} .cm{color:var(--text)} .st{color:var(--cyan)}
+  .t-plan{color:var(--violet)} .t-build{color:var(--indigo)} .t-gate{color:var(--amber)}
+  .t-ver{color:#c4b5fd} .t-skep{color:var(--pink)} .t-fix{color:#e879f9} .t-ok{color:var(--green)}
+  .t-mut{color:var(--muted)} .t-dim{color:var(--dim)} .t-red{color:var(--red)}
+  .caret{display:inline-block;width:8px;background:var(--cyan);animation:blink 1s step-end infinite;color:transparent}
+  @keyframes blink{50%{opacity:0}}
+
+  .board-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px;flex:1}
+  .col{background:var(--ink);border:1px solid var(--line-soft);border-radius:10px;padding:10px;min-height:140px}
+  .col h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:9px;display:flex;justify-content:space-between}
+  .col h4 .cnt{color:var(--muted)}
+  .chip{font-family:var(--mono);font-size:.72rem;border:1px solid var(--line);border-radius:7px;padding:6px 9px;margin-bottom:7px;background:var(--panel2);color:var(--muted);display:flex;justify-content:space-between;gap:6px;animation:pop .35s ease}
+  .chip .tag{color:var(--dim);font-size:.66rem}
+  .chip.working{border-color:var(--indigo);color:var(--text)} .chip.working .tag{color:var(--indigo)}
+  .chip.review{border-color:var(--violet)}
+  .chip.fixing{border-color:var(--red);color:var(--text)} .chip.fixing .tag{color:var(--red)}
+  .chip.done{border-color:rgba(52,211,153,.5);color:var(--green)} .chip.done .tag{color:var(--green)}
+  @keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+  .theater-caption{grid-column:1/-1;text-align:center;font-size:.85rem;color:var(--dim);font-family:var(--mono)}
+
+  /* sections */
+  section{padding:76px 0}
+  .sec-eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+  h2{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.6vw,2.5rem);letter-spacing:-.01em;margin-bottom:14px}
+  .sec-sub{color:var(--muted);max-width:620px;margin-bottom:44px}
+
+  /* flow rail */
+  .rail{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+  .rail::before{content:"";position:absolute;top:21px;left:4%;right:4%;height:2px;background:var(--grad);opacity:.35}
+  .phase{position:relative;padding-top:52px}
+  .phase .node{position:absolute;top:8px;left:0;width:28px;height:28px;border-radius:50%;background:var(--ink);border:2px solid var(--c);display:grid;place-items:center;font-family:var(--mono);font-size:.68rem;color:var(--c);font-weight:600}
+  .phase h3{font-family:var(--mono);font-size:.82rem;letter-spacing:.08em;color:var(--c);margin-bottom:8px}
+  .phase p{font-size:.86rem;color:var(--muted);line-height:1.55}
+  .phase p b{color:var(--text);font-weight:600}
+
+  /* crew */
+  .crew{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+  .agent{background:var(--panel);border:1px solid var(--line-soft);border-radius:11px;padding:16px 18px;transition:border-color .2s,transform .2s}
+  .agent:hover{border-color:var(--violet);transform:translateY(-2px)}
+  .agent .a-name{font-family:var(--mono);font-size:.85rem;color:var(--text);font-weight:600;display:flex;gap:9px;align-items:center;margin-bottom:6px}
+  .agent .a-role{font-size:.82rem;color:var(--muted);line-height:1.5}
+  .crew-group{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin:34px 0 14px}
+  .crew-group:first-of-type{margin-top:0}
+
+  /* commands */
+  .cmds{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .cmd{display:grid;grid-template-columns:minmax(260px,.9fr) 1.1fr;gap:18px;padding:15px 22px;border-bottom:1px solid var(--line-soft);align-items:baseline}
+  .cmd:last-child{border-bottom:none}
+  .cmd:hover{background:var(--panel2)}
+  .cmd code{font-family:var(--mono);font-size:.84rem;color:var(--cyan);word-break:break-all}
+  .cmd code .p{color:var(--green)} .cmd code .fl{color:var(--pink)}
+  .cmd span{font-size:.87rem;color:var(--muted)}
+
+  /* guarantees */
+  .guar{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .g{background:var(--panel);border:1px solid var(--line-soft);border-radius:11px;padding:18px 20px}
+  .g h3{font-size:.95rem;font-weight:600;margin-bottom:6px;display:flex;gap:10px;align-items:center}
+  .g p{font-size:.86rem;color:var(--muted)}
+  .g p code{font-family:var(--mono);font-size:.78rem;color:var(--cyan)}
+
+  /* get started */
+  .steps{counter-reset:step;display:grid;gap:14px;max-width:760px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+  .step h3{font-size:.98rem;font-weight:600;margin-bottom:10px}
+  .step h3::before{counter-increment:step;content:counter(step);font-family:var(--mono);color:var(--ink);background:var(--grad);border-radius:6px;padding:2px 9px;margin-right:12px;font-size:.85rem}
+  .code-block{display:flex;align-items:center;background:var(--ink);border:1px solid var(--line-soft);border-radius:9px;overflow:hidden;margin-top:8px}
+  .code-block code{font-family:var(--mono);font-size:.8rem;color:var(--cyan);padding:12px 16px;flex:1;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  .code-block code::-webkit-scrollbar{display:none}
+  .step p{font-size:.87rem;color:var(--muted)}
+
+  footer{border-top:1px solid var(--line-soft);padding:36px 0 44px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;color:var(--dim);font-size:.85rem}
+  footer .logo{font-size:1rem}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:1000px){
+    .theater{grid-template-columns:1fr}
+    .rail{grid-template-columns:repeat(2,1fr);gap:26px 18px}
+    .rail::before{display:none}
+    .guar{grid-template-columns:1fr}
+  }
+  @media (max-width:560px){
+    .cmd{grid-template-columns:1fr;gap:4px}
+    .nav-links a:not(.gh-btn){display:none}
+    .term-body{min-height:300px;font-size:.74rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="sky" aria-hidden="true"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
+
+<div class="wrap">
+  <nav>
+    <div class="logo">◆ Dev<b>Flow</b></div>
+    <div class="nav-links">
+      <a href="#flow">The flow</a>
+      <a href="#crew">The crew</a>
+      <a href="#commands">Commands</a>
+      <a href="#start">Get started</a>
+      <a class="gh-btn" href="https://github.com/ljojua1998/skills">GitHub ★</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <p class="eyebrow">Agentic delivery · Claude Code · zero dependencies</p>
+    <h1>One command.<br><span class="grad">A whole delivery team.</span></h1>
+    <p class="sub">DevFlow plans your request into tickets, builds them with <b>parallel specialist agents</b>, runs QA, security, design and code review, debugs until clean — and hands you a branch. <b>14 agents, 15 skills</b>, installed in one line.</p>
+
+    <div class="install">
+      <code><span class="p">❯</span> git clone https://github.com/ljojua1998/skills.git; cd skills; powershell -ExecutionPolicy Bypass -File .\install.ps1 -Global</code>
+      <button class="copy-btn" data-copy="git clone https://github.com/ljojua1998/skills.git; cd skills; powershell -ExecutionPolicy Bypass -File .\install.ps1 -Global">copy</button>
+    </div>
+    <p class="hero-note">Windows one-liner · <a href="#start">macOS / Linux version below</a> · MIT licensed</p>
+
+    <!-- signature: the orchestration theater -->
+    <div class="theater" aria-label="Animated demo: a /ship run driving a kanban board">
+      <div class="term">
+        <div class="bar">
+          <span class="dot" style="background:var(--red)"></span><span class="dot" style="background:var(--amber)"></span><span class="dot" style="background:var(--green)"></span>
+          <span class="bar-title">claude — /ship session</span>
+        </div>
+        <div class="term-body" id="term"></div>
+      </div>
+      <div class="board">
+        <div class="bar">
+          <span class="dot" style="background:var(--violet)"></span><span class="dot" style="background:var(--cyan)"></span><span class="dot" style="background:var(--pink)"></span>
+          <span class="bar-title">workboard/ — EPIC-001</span>
+        </div>
+        <div class="board-cols">
+          <div class="col" id="col-backlog"><h4>Backlog <span class="cnt"></span></h4></div>
+          <div class="col" id="col-building"><h4>Building <span class="cnt"></span></h4></div>
+          <div class="col" id="col-review"><h4>Review <span class="cnt"></span></h4></div>
+          <div class="col" id="col-done"><h4>Done <span class="cnt"></span></h4></div>
+        </div>
+      </div>
+      <p class="theater-caption">▲ what one /ship run does — the terminal and the board are the same state</p>
+    </div>
+  </header>
+
+  <section id="flow">
+    <p class="sec-eyebrow">The flow</p>
+    <h2>Six phases. Every gate <span class="grad" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">enforced</span>, not promised.</h2>
+    <p class="sec-sub">The pipeline is state-on-disk: markdown tickets with statuses, an append-only run ledger, one git commit per finished ticket. Kill the session anytime — <code style="font-family:var(--mono);font-size:.85em;color:var(--cyan)">/ship resume</code> continues exactly where it stopped.</p>
+    <div class="rail">
+      <div class="phase reveal" style="--c:var(--cyan)"><span class="node">0</span><h3>DISCOVER</h3><p>Vague idea? A short interview turns it into a <b>mini-PRD</b> before a single ticket exists.</p></div>
+      <div class="phase reveal" style="--c:var(--indigo)"><span class="node">1</span><h3>PLAN</h3><p>The planner reads your codebase and writes <b>Jira-like tickets</b> with acceptance criteria and file ownership.</p></div>
+      <div class="phase reveal" style="--c:var(--violet)"><span class="node">2</span><h3>BUILD</h3><p>Specialist agents build tickets <b>in parallel</b>. A stop-gate hook re-runs typecheck, lint and tests — red means the agent can't finish.</p></div>
+      <div class="phase reveal" style="--c:#c4b5fd"><span class="node">3</span><h3>VERIFY</h3><p>QA executes the criteria; security, code and <b>screenshot-based design review</b> run alongside; a test-engineer grows the regression net.</p></div>
+      <div class="phase reveal" style="--c:var(--pink)"><span class="node">4</span><h3>DEBUG</h3><p>A skeptic agent <b>refutes false positives</b> first; the debugger root-causes what's real and re-verifies until clean.</p></div>
+      <div class="phase reveal" style="--c:var(--green)"><span class="node">5</span><h3>SHIP</h3><p>Docs updated, retro lessons saved, branch ready — it <b>offers</b> a PR and never pushes without your yes.</p></div>
+    </div>
+  </section>
+
+  <section id="crew">
+    <p class="sec-eyebrow">The crew</p>
+    <h2>14 agents, each with one job.</h2>
+    <p class="sec-sub">Builders write, reviewers judge, the skeptic filters, the debugger fixes. Every agent is preloaded with craft standards you can edit — encode your team's rules once, every agent follows them.</p>
+
+    <p class="crew-group">Plans</p>
+    <div class="crew">
+      <div class="agent reveal"><div class="a-name">🧠 planner</div><div class="a-role">Architecture decision + ticket breakdown with acceptance criteria</div></div>
+    </div>
+    <p class="crew-group">Builds</p>
+    <div class="crew">
+      <div class="agent reveal"><div class="a-name">🎨 frontend-developer</div><div class="a-role">Components, state, styling, accessibility — anti-slop design rules built in</div></div>
+      <div class="agent reveal"><div class="a-name">🔩 backend-developer</div><div class="a-role">APIs, services, migrations, auth — secure by default</div></div>
+      <div class="agent reveal"><div class="a-name">🌉 fullstack-developer</div><div class="a-role">Contract-first vertical slices, driven end-to-end</div></div>
+      <div class="agent reveal"><div class="a-name">📱 mobile-developer</div><div class="a-role">RN / Expo / Flutter / native — offline, gestures, 60fps</div></div>
+      <div class="agent reveal"><div class="a-name">🧊 web3d-developer</div><div class="a-role">Three.js / R3F / shaders — measured FPS, leak-free scenes</div></div>
+      <div class="agent reveal"><div class="a-name">🐳 devops-engineer</div><div class="a-role">Docker, CI/CD, env config, health checks</div></div>
+    </div>
+    <p class="crew-group">Verifies</p>
+    <div class="crew">
+      <div class="agent reveal"><div class="a-name">🔍 qa-engineer</div><div class="a-role">Executes acceptance criteria for real; probes edges and error paths</div></div>
+      <div class="agent reveal"><div class="a-name">🛡️ security-auditor</div><div class="a-role">OWASP-style review with concrete exploit scenarios</div></div>
+      <div class="agent reveal"><div class="a-name">🧐 code-auditor</div><div class="a-role">Correctness, architecture, consistency — the tech-lead review</div></div>
+      <div class="agent reveal"><div class="a-name">📸 design-reviewer</div><div class="a-role">Screenshots the real UI at three breakpoints and critiques it</div></div>
+      <div class="agent reveal"><div class="a-name">🕸️ test-engineer</div><div class="a-role">Turns criteria into durable tests — the regression net grows every epic</div></div>
+    </div>
+    <p class="crew-group">Guards</p>
+    <div class="crew">
+      <div class="agent reveal"><div class="a-name">🤨 verifier</div><div class="a-role">The skeptic: tries to refute every finding — false positives die here</div></div>
+      <div class="agent reveal"><div class="a-name">🔧 debugger</div><div class="a-role">Reproduce → root-cause → fix → re-verify; never symptom-patching</div></div>
+    </div>
+  </section>
+
+  <section id="commands">
+    <p class="sec-eyebrow">Commands</p>
+    <h2>Everything from one prompt.</h2>
+    <p class="sec-sub">One orchestrator command with modes, plus standalone passes when you need just one thing.</p>
+    <div class="cmds">
+      <div class="cmd"><code><span class="p">❯</span> /ship "build X"</code><span>The full pipeline — asks at launch: capped run or loop-until-done</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /ship <span class="fl">--review</span> "…"</code><span>The plan waits for your approval before any code is written</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /ship <span class="fl">--loop</span> "…"</code><span>Cycles until the Definition of Done is met — progress guards, no fake "done"</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /ship <span class="fl">--quick</span> / <span class="fl">--full</span> / <span class="fl">--budget</span></code><span>Scale the pipeline and the cost to the task</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /ship resume</code><span>A new session continues exactly where the board says it stopped</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /board</code><span>Live Jira-style status: epics, tickets, findings, blockers</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /qa · /security-audit · /tests</code><span>Standalone passes: functional review, OWASP audit, coverage & flaky hunting</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /debug-findings</code><span>Root-cause and fix whatever the reviews found</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /patrol</code><span>Report-only health sweep — safe to run on a schedule</span></div>
+      <div class="cmd"><code><span class="p">❯</span> /retro · /devflow-update</code><span>Distill lessons into steering docs · pull the latest DevFlow</span></div>
+    </div>
+  </section>
+
+  <section id="guarantees">
+    <p class="sec-eyebrow">Hard guarantees</p>
+    <h2>Discipline as code, not as hope.</h2>
+    <p class="sec-sub">The difference between "the AI usually tests things" and a system where skipping the test is structurally impossible.</p>
+    <div class="guar">
+      <div class="g reveal"><h3>🚦 The stop-gate</h3><p>A hook re-runs typecheck, lint and tests every time a builder tries to finish. Red checks bounce the agent back with the failure — <b>"done with failing tests" cannot happen</b>.</p></div>
+      <div class="g reveal"><h3>🤨 Adversarial verification</h3><p>Every CRITICAL/HIGH finding faces a skeptic agent that tries to refute it against the real code. Only confirmed issues cost a debug cycle.</p></div>
+      <div class="g reveal"><h3>🚨 Autonomous, not blind</h3><p>Destructive migrations, auth/payment code, mass deletions and major upgrades pause even loop mode and ask you first — with the decision logged in the run ledger.</p></div>
+      <div class="g reveal"><h3>📜 Run ledger + drift detection</h3><p>Every run leaves an append-only trace. <code>/ship resume</code> reconciles tickets against git history before continuing — a died agent can't leave a ghost ticket.</p></div>
+      <div class="g reveal"><h3>🧬 It learns your project</h3><p>Agents keep project memory and steering docs; <code>/retro</code> distills every epic's lessons. The fifth run knows things the first one had to discover.</p></div>
+      <div class="g reveal"><h3>🌿 Git discipline</h3><p>Each epic on its own branch, one ticket = one conventional commit, every stage revertable. Merging and pushing stay in your hands.</p></div>
+    </div>
+  </section>
+
+  <section id="start">
+    <p class="sec-eyebrow">Get started</p>
+    <h2>Shipping in three steps.</h2>
+    <div class="steps">
+      <div class="step reveal">
+        <h3>Get DevFlow</h3>
+        <div class="code-block"><code>git clone https://github.com/ljojua1998/skills.git; cd skills; powershell -ExecutionPolicy Bypass -File .\install.ps1 -Global</code><button class="copy-btn" data-copy="git clone https://github.com/ljojua1998/skills.git; cd skills; powershell -ExecutionPolicy Bypass -File .\install.ps1 -Global">copy</button></div>
+        <div class="code-block"><code>git clone https://github.com/ljojua1998/skills.git && cd skills && ./install.sh --global</code><button class="copy-btn" data-copy="git clone https://github.com/ljojua1998/skills.git && cd skills && ./install.sh --global">copy</button></div>
+        <p style="margin-top:10px">Global install covers every project on the machine. Per-project: <code style="font-family:var(--mono);font-size:.8em;color:var(--cyan)">.\install.ps1 -Target "path"</code> — commit <code style="font-family:var(--mono);font-size:.8em;color:var(--cyan)">.claude/</code> and your whole team has the same pipeline.</p>
+      </div>
+      <div class="step reveal">
+        <h3>Open Claude Code in any project</h3>
+        <div class="code-block"><code>cd your-project && claude</code><button class="copy-btn" data-copy="cd your-project && claude">copy</button></div>
+        <p style="margin-top:10px">Works on an existing codebase (it studies your conventions first) or an empty folder (it scaffolds the whole project).</p>
+      </div>
+      <div class="step reveal">
+        <h3>Ship</h3>
+        <div class="code-block"><code>/ship --review "Build a task manager with auth and a kanban board"</code><button class="copy-btn" data-copy="/ship --review &quot;Build a task manager with auth and a kanban board&quot;">copy</button></div>
+        <p style="margin-top:10px">Watch the board fill, answer the escalations that matter, merge the branch when it's verified. That's the job now.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">◆ Dev<b>Flow</b></div>
+    <div>MIT · built for <a href="https://claude.com/claude-code">Claude Code</a> · <a href="https://github.com/ljojua1998/skills">github.com/ljojua1998/skills</a></div>
+  </footer>
+</div>
+
+<script>
+// copy buttons
+document.querySelectorAll('.copy-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    navigator.clipboard.writeText(b.dataset.copy).then(()=>{
+      b.textContent='copied ✓';b.classList.add('done');
+      setTimeout(()=>{b.textContent='copy';b.classList.remove('done')},1800);
+    });
+  });
+});
+
+// scroll reveals
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ===== orchestration theater =====
+const term=document.getElementById('term');
+const cols={backlog:document.getElementById('col-backlog'),building:document.getElementById('col-building'),review:document.getElementById('col-review'),done:document.getElementById('col-done')};
+const TICKETS=[
+  {id:'DEV-001',name:'db schema',agent:'backend'},
+  {id:'DEV-002',name:'auth api',agent:'backend'},
+  {id:'DEV-003',name:'expenses ui',agent:'frontend'},
+  {id:'DEV-004',name:'monthly chart',agent:'frontend'},
+  {id:'DEV-005',name:'e2e tests',agent:'test-eng'},
+  {id:'DEV-006',name:'docker + ci',agent:'devops'}
+];
+const chips={};
+function counts(){for(const k in cols){const n=cols[k].querySelectorAll('.chip').length;cols[k].querySelector('.cnt').textContent=n?n:''}}
+function chip(t,state,tag){
+  let c=chips[t.id];
+  if(!c){c=document.createElement('div');c.className='chip';c.innerHTML=`<span>${t.id}</span><span class="tag"></span>`;chips[t.id]=c;}
+  c.classList.remove('working','review','fixing','done');
+  if(state)c.classList.add(state);
+  c.querySelector('.tag').textContent=tag||t.name;
+  return c;
+}
+function place(t,col,state,tag){const c=chip(t,state,tag);cols[col].appendChild(c);c.style.animation='none';void c.offsetWidth;c.style.animation='';counts();}
+function tline(html){const r=document.createElement('div');r.className='row';r.innerHTML=html;term.appendChild(r);requestAnimationFrame(()=>r.classList.add('on'));}
+
+const SCRIPT=[
+  [0,   ()=>tline('<span class="pr">❯</span> <span class="cm">/ship</span> <span class="st">"build an expense tracker"</span>')],
+  [1400,()=>tline('<span class="t-plan">🧠 planner</span> <span class="t-mut">reading the codebase → architecture decision</span>')],
+  [2900,()=>{tline('<span class="t-plan">🧠 planner</span> <span class="t-mut">6 tickets on the board, file ownership assigned</span>');TICKETS.forEach((t,i)=>setTimeout(()=>place(t,'backlog'),i*160));}],
+  [4600,()=>{tline('<span class="t-build">🔨 build</span> <span class="t-mut">3 agents in parallel</span>');[0,1,2].forEach(i=>place(TICKETS[i],'building','working',TICKETS[i].agent));}],
+  [6400,()=>{tline('<span class="t-gate">🚦 gate</span> <span class="t-mut">typecheck</span> <span class="t-ok">✓</span> <span class="t-mut">lint</span> <span class="t-ok">✓</span> <span class="t-mut">tests</span> <span class="t-ok">28 passing ✓</span>');[0,1,2].forEach(i=>place(TICKETS[i],'review','review'));[3,4,5].forEach(i=>place(TICKETS[i],'building','working',TICKETS[i].agent));}],
+  [8300,()=>{tline('<span class="t-gate">🚦 gate</span> <span class="t-mut">tests</span> <span class="t-ok">42 passing ✓</span> <span class="t-mut">· 6 commits — one per ticket</span>');[3,4,5].forEach(i=>place(TICKETS[i],'review','review'));}],
+  [9900,()=>tline('<span class="t-ver">🔍 verify</span> <span class="t-mut">qa</span> <span class="t-ok">✓</span> <span class="t-mut">security</span> <span class="t-ok">✓</span> <span class="t-mut">audit</span> <span class="t-ok">✓</span> <span class="t-mut">design</span> <span class="t-ok">✓</span>')],
+  [11400,()=>{tline('<span class="t-skep">🤨 verifier</span> <span class="t-mut">3 findings →</span> <span class="t-red">1 confirmed</span><span class="t-mut">,</span> <span class="t-dim">2 refuted</span>');place(TICKETS[3],'building','fixing','debugger');[0,1,2,4,5].forEach(i=>place(TICKETS[i],'done','done','✓'));}],
+  [13200,()=>{tline('<span class="t-fix">🔧 debugger</span> <span class="t-mut">root-caused & fixed — re-verified</span> <span class="t-ok">clean ✓</span>');place(TICKETS[3],'done','done','✓');}],
+  [14800,()=>tline('<span class="t-ok">✅ EPIC-001 done</span> <span class="t-mut">· branch</span> <span class="st">devflow/epic-001</span> <span class="t-mut">· PR ready</span>')],
+  [16200,()=>tline('<span class="pr">❯</span> <span class="caret">▌</span>')]
+];
+const CYCLE=20000;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function resetTheater(){term.innerHTML='';for(const k in cols)cols[k].querySelectorAll('.chip').forEach(c=>c.remove());counts();}
+function runTheater(){resetTheater();SCRIPT.forEach(([t,fn])=>setTimeout(fn,t));}
+if(reduced){ // static final state
+  SCRIPT.forEach(([t,fn])=>fn());
+}else{
+  runTheater();setInterval(runTheater,CYCLE);
+}
+</script>
+</body>
+</html>
