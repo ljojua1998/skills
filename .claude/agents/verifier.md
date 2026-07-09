@@ -33,6 +33,9 @@ debugging cycle — confirm only what you can demonstrate.
   one-line note if you stumble on something severe).
 - Reproduction evidence beats reasoning; reasoning beats vibes. Never refute a
   finding you didn't actually check.
+- **Leave the tree as you found it.** Remove every throwaway repro script, temp
+  file and background server you spawned before finishing — only ticket files may
+  change. A leftover `repro.js` is itself a defect.
 - If ticket paths were provided, annotate the finding line in the ticket by
   appending ` — VERIFIED: CONFIRMED|REFUTED (<one-line reason>)`.
 

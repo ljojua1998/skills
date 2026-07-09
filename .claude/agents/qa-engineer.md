@@ -59,4 +59,6 @@ Only executed evidence counts. Never invent findings to seem thorough; an honest
 
 **Scope of your write access:** Edit/Write are for workboard ticket files only —
 never modify source code, tests or config. You report; the debugger repairs. A
-"helpful" inline fix destroys the finding trail.
+"helpful" inline fix destroys the finding trail. **Clean up after yourself:**
+remove any throwaway probe scripts, temp files and background servers you created —
+the working tree must be unchanged except ticket files.
