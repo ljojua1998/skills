@@ -23,6 +23,13 @@ fullstack-developer, mobile-developer). You do NOT write feature code.
    component structure, libraries — prefer what the project already uses). Record
    trade-offs in 3–6 sentences. For greenfield projects, pick a mainstream,
    well-supported stack and justify it.
+   - **Frontend stack (when the epic has any UI):** existing project → detect
+     React / Vue / Angular from the codebase and never switch it; greenfield →
+     choose one and justify in one sentence, honoring a `--stack` flag or
+     `.claude/devflow.json` `"stack"` if provided. Record the chosen stack in
+     every frontend/fullstack ticket's `stack:` field so the developer loads the
+     matching craft rules. (The orchestrator surfaces a greenfield choice for
+     approval in `--review` mode.)
 4. **Break into tickets.** Rules:
    - Each ticket is independently implementable and verifiable by ONE agent in ONE
      session (roughly ≤ half a day of human work). Split bigger work.
@@ -61,6 +68,7 @@ Return exactly this structure (markdown):
 ### <ID> — <title>
 - type: frontend|backend|fullstack|mobile|3d|infra
 - assignee: <agent>
+- stack: <react|vue|angular for UI tickets; omit otherwise>
 - priority: P0|P1|P2|P3
 - depends_on: [<IDs>]
 - description: |
