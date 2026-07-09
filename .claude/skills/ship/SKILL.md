@@ -1,7 +1,7 @@
 ---
 name: ship
 description: Full delivery pipeline — takes a feature/project request, plans it into Jira-like markdown tickets, builds each ticket with specialized developer agents, then runs QA, security and code-audit agents, loops a debugger agent over findings until clean, and closes with a final report. Use when the user asks to build a feature or project end-to-end, or invokes /ship.
-argument-hint: "[--quick|--full] [--review] [--budget] [--discover] [--loop] [--dry-run] <what to build> | resume"
+argument-hint: "[--quick|--full] [--review] [--budget] [--discover] [--loop] [--dry-run] [--stack react|vue|angular] <what to build> | resume"
 hooks:
   PreToolUse:
     - matcher: Bash
@@ -145,6 +145,7 @@ defaults. Explicit flags always override config; config overrides built-in defau
   "budget": false,           // true = always run workers on sonnet
   "review": false,           // true = always pause for plan approval
   "discovery": "auto",       // auto | always | never
+  "stack": null,             // react | vue | angular — pin the greenfield UI stack
   "pr": "ask",               // ask | never — offer to push & open a PR at close
   "language": "en",          // language for user-facing reports (e.g. "ka", "en")
   "limits": {                // hard run guardrails (loop mode respects these too)
@@ -210,9 +211,13 @@ When the plan returns:
    changes the architecture (e.g. which database, native vs cross-platform), use
    AskUserQuestion BEFORE spawning the planner, never after building has started.
 5. **Exception — `--review` flag**: present the plan and STOP with AskUserQuestion
-   (approve / request changes / cancel). On "request changes", re-run the planner
-   with the feedback; on approve, commit the workboard (`chore(EPIC-NNN): plan`)
-   and continue.
+   (approve / request changes / cancel). If the plan involves a **greenfield
+   frontend stack choice**, include it explicitly in what you present and let the
+   user override it (React / Vue / Angular) — this is a decision they may care
+   about. On "request changes", re-run the planner with the feedback; on approve,
+   commit the workboard (`chore(EPIC-NNN): plan`) and continue.
+   - A `--stack <react|vue|angular>` flag (or config `"stack"`) pins the greenfield
+     UI stack up front; pass it to the planner and skip asking about it.
 6. **Exception — `--dry-run` flag**: write the epic + tickets to the workboard
    (status `backlog`), commit `chore(EPIC-NNN): plan`, show the plan summary, and
    STOP entirely — no building. The user continues later with `/ship resume`.

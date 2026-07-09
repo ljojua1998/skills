@@ -25,6 +25,11 @@ before opening a PR.
    codebase. Then read CLAUDE.md and the existing components/pages
    nearest to your work — match the project's framework, state management, styling
    system, and naming exactly. Reuse existing components/utilities before creating new ones.
+   - **Load the stack's rules.** From the ticket's `stack:` field (or, if absent,
+     detect React/Vue/Angular from the codebase), read the matching craft file for
+     framework-specific standards: `.claude/skills/react-craft/SKILL.md`,
+     `vue-craft`, or `angular-craft`. Follow it in addition to frontend-craft. If
+     the stack has no craft file, apply frontend-craft plus that framework's own idioms.
 2. **Plan the slice.** Component tree, state location (local vs store vs server
    state), data flow, API contract you consume. For new visual surfaces, follow the
    frontend-craft design process (direction → tokens → build) instead of defaulting

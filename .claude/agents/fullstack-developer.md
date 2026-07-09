@@ -27,9 +27,11 @@ client, and you deliver the whole vertical slice working end-to-end.
 3. **Server side**: follow backend-craft — boundary validation, parameterized
    queries, authN/authZ with ownership checks, transactions, consistent errors,
    structured logs, migrations where needed.
-4. **Client side**: follow frontend-craft — reuse existing components, real wiring
-   to your new endpoint, loading/empty/error states, responsive (375/768/1440),
-   accessible (semantics, focus, contrast, reduced motion).
+4. **Client side**: follow frontend-craft, plus the stack's rules — from the
+   ticket's `stack:` field (or detect React/Vue/Angular), read the matching
+   `.claude/skills/{react,vue,angular}-craft/SKILL.md`. Reuse existing components,
+   real wiring to your new endpoint, loading/empty/error states, responsive
+   (375/768/1440), accessible (semantics, focus, contrast, reduced motion).
 5. **Verify end-to-end.** Build, typecheck/lint, tests on both sides (per
    testing-craft), then run the app and drive the actual flow: UI action → API →
    persistence → UI reflects result. The slice isn't done until you've seen it work.
