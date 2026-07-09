@@ -265,6 +265,34 @@ CRITICAL/HIGH findings — that gate is enforced by the `/ship` flow.
 
 </details>
 
+## 🔬 Proof — a real run catching a bug the tests missed
+
+DevFlow was battle-tested end to end by building a small Express notes API from a
+one-line request. The interesting part wasn't that it built working code — it was
+what happened *after* the code was green:
+
+```text
+planner        → 2 tickets (app + tests), acceptance criteria, file ownership
+backend-dev    → Express API + in-memory store, deps installed, self-verified live
+backend-dev    → 15 integration tests (node:test + supertest), run twice, all green
+🚦 stop-gate   → npm test exits 0 — build allowed to finish
+qa-engineer    → executed every endpoint + edge cases (unicode, 10k title, mass-assign)
+                 verdict: PASS, 0 findings                     ← tests AND QA were clean
+🛡️ security    → [MEDIUM] stack-trace + absolute-path disclosure on 413/415 body
+                 errors — only malformed-JSON was handled; PayloadTooLarge and
+                 UnsupportedMediaType fell through to Express's default handler,
+                 leaking err.stack with C:\Users\<name>\... paths. Reproduced by curl.
+🤨 verifier    → independently reproduced both cases → CONFIRMED (not a false positive)
+🔧 debugger    → root-caused, added a proper final error handler, +3 regression tests
+                 (18 total) → re-verified: 413/415 now return clean JSON, no leak
+```
+
+Fifteen passing tests and a clean QA pass would have shipped that info-disclosure
+bug. The **adversarial security + verify + debug** stages are the difference. The
+same run also surfaced a weakness in DevFlow itself (a reviewer left a throwaway
+repro script behind) — now fixed. This is the whole point: layers that catch what
+a single pass, however good, doesn't.
+
 ## 🛡 Hard guarantees
 
 - 🚦 **Deterministic quality gate** — developer and debugger agents carry a `Stop`

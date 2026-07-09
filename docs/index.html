@@ -132,6 +132,20 @@
   .g p{font-size:.86rem;color:var(--muted)}
   .g p code{font-family:var(--mono);font-size:.78rem;color:var(--cyan)}
 
+  /* proof */
+  .proof-lead{color:var(--muted);max-width:640px;margin-bottom:24px}
+  .proof-lead b{color:var(--text);font-weight:600}
+  .proof-log{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-family:var(--mono);font-size:.82rem}
+  .proof-log .bar{border-radius:0}
+  .proof-rows{padding:16px 20px;line-height:1.95;overflow-x:auto}
+  .proof-rows .r{white-space:nowrap}
+  .proof-rows .stage{display:inline-block;min-width:112px}
+  .pl-plan{color:var(--violet)} .pl-build{color:var(--indigo)} .pl-gate{color:var(--amber)}
+  .pl-qa{color:#c4b5fd} .pl-sec{color:var(--red)} .pl-ver{color:var(--pink)} .pl-fix{color:#e879f9}
+  .pl-ok{color:var(--green)} .pl-mut{color:var(--muted)} .pl-note{color:var(--dim)}
+  .proof-punch{margin-top:22px;border-left:3px solid var(--red);padding:6px 0 6px 18px;color:var(--text);max-width:660px}
+  .proof-punch b{color:var(--red)}
+
   /* get started */
   .steps{counter-reset:step;display:grid;gap:14px;max-width:760px}
   .step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
@@ -176,7 +190,7 @@
     <div class="nav-links">
       <a href="#flow">The flow</a>
       <a href="#crew">The crew</a>
-      <a href="#commands">Commands</a>
+      <a href="#proof">Proof</a>
       <a href="#start">Get started</a>
       <a class="gh-btn" href="https://github.com/ljojua1998/skills">GitHub ★</a>
     </div>
@@ -295,6 +309,32 @@
       <div class="g reveal"><h3>🧬 It learns your project</h3><p>Agents keep project memory and steering docs; <code>/retro</code> distills every epic's lessons. The fifth run knows things the first one had to discover.</p></div>
       <div class="g reveal"><h3>🌿 Git discipline</h3><p>Each epic on its own branch, one ticket = one conventional commit, every stage revertable. Merging and pushing stay in your hands.</p></div>
     </div>
+  </section>
+
+  <section id="proof">
+    <p class="sec-eyebrow">Proof</p>
+    <h2>It caught a bug the tests <span class="grad" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">didn't</span>.</h2>
+    <p class="proof-lead">A real end-to-end run: build a small Express notes API from one line. Fifteen tests passed. QA passed clean. Then the adversarial layers went to work — and found what green tests hid.</p>
+
+    <div class="proof-log">
+      <div class="bar">
+        <span class="dot" style="background:var(--red)"></span><span class="dot" style="background:var(--amber)"></span><span class="dot" style="background:var(--green)"></span>
+        <span class="bar-title">notes-api — one /ship run, real agents</span>
+      </div>
+      <div class="proof-rows">
+        <div class="r"><span class="stage pl-plan">planner</span><span class="pl-mut">2 tickets (app + tests), acceptance criteria, file ownership</span></div>
+        <div class="r"><span class="stage pl-build">backend-dev</span><span class="pl-mut">Express API + store, deps installed, self-verified on a live server</span></div>
+        <div class="r"><span class="stage pl-build">backend-dev</span><span class="pl-mut">15 integration tests — run twice, all green</span></div>
+        <div class="r"><span class="stage pl-gate">🚦 gate</span><span class="pl-ok">npm test exits 0</span> <span class="pl-mut">— build allowed to finish</span></div>
+        <div class="r"><span class="stage pl-qa">qa-engineer</span><span class="pl-mut">every endpoint + edges (unicode, 10k title, mass-assign) →</span> <span class="pl-ok">PASS, 0 findings</span></div>
+        <div class="r"><span class="stage pl-sec">🛡️ security</span><span class="pl-sec">[MEDIUM] stack-trace + C:\Users\&lt;name&gt;\… leak on 413/415 body errors</span></div>
+        <div class="r"><span class="stage pl-note"></span><span class="pl-note">only malformed-JSON was handled; other body-parser errors hit Express's default handler. Reproduced by curl.</span></div>
+        <div class="r"><span class="stage pl-ver">🤨 verifier</span><span class="pl-mut">independently reproduced both cases →</span> <span class="pl-sec">CONFIRMED</span></div>
+        <div class="r"><span class="stage pl-fix">🔧 debugger</span><span class="pl-mut">final error handler + 3 regression tests (18 total) →</span> <span class="pl-ok">clean, no leak</span></div>
+      </div>
+    </div>
+
+    <p class="proof-punch">Fifteen passing tests and a clean QA pass would have <b>shipped that info-disclosure bug</b>. The adversarial security → verify → debug layers are the difference — they catch what a single pass, however good, doesn't.</p>
   </section>
 
   <section id="start">
