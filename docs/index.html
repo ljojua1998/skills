@@ -132,6 +132,17 @@
   .g p{font-size:.86rem;color:var(--muted)}
   .g p code{font-family:var(--mono);font-size:.78rem;color:var(--cyan)}
 
+  /* stacks */
+  .stacks{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .stackcard{background:var(--panel);border:1px solid var(--line-soft);border-radius:12px;padding:18px 20px}
+  .stackcard h3{font-size:.95rem;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:9px}
+  .stackcard .craft{font-family:var(--mono);font-size:.68rem;color:var(--dim);margin-bottom:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .schip{font-family:var(--mono);font-size:.76rem;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--text);background:var(--panel2)}
+  .schip.hot{border-color:var(--violet);color:var(--pink)}
+  .stacks-note{color:var(--dim);font-size:.85rem;margin-top:22px;max-width:680px}
+  .stacks-note code{font-family:var(--mono);color:var(--cyan);font-size:.9em}
+
   /* proof */
   .proof-lead{color:var(--muted);max-width:640px;margin-bottom:24px}
   .proof-lead b{color:var(--text);font-weight:600}
@@ -190,6 +201,7 @@
     <div class="nav-links">
       <a href="#flow">The flow</a>
       <a href="#crew">The crew</a>
+      <a href="#stacks">Stacks</a>
       <a href="#proof">Proof</a>
       <a href="#start">Get started</a>
       <a class="gh-btn" href="https://github.com/ljojua1998/skills">GitHub ★</a>
@@ -277,6 +289,55 @@
       <div class="agent reveal"><div class="a-name">🤨 verifier</div><div class="a-role">The skeptic: tries to refute every finding — false positives die here</div></div>
       <div class="agent reveal"><div class="a-name">🔧 debugger</div><div class="a-role">Reproduce → root-cause → fix → re-verify; never symptom-patching</div></div>
     </div>
+  </section>
+
+  <section id="stacks">
+    <p class="sec-eyebrow">Stacks it knows</p>
+    <h2>Trained on your stack, <span class="grad" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">not just "code"</span>.</h2>
+    <p class="sec-sub">Each stack has a dedicated craft skill — authoritative, framework-specific rules the developer agents load automatically from the ticket's stack (React ≠ Angular ≠ FastAPI). Existing projects are auto-detected; greenfield picks and you confirm.</p>
+    <div class="stacks">
+      <div class="stackcard reveal">
+        <h3>🎨 Frontend</h3>
+        <div class="craft">react-craft · vue-craft · angular-craft</div>
+        <div class="chips"><span class="schip hot">React</span><span class="schip hot">Vue 3</span><span class="schip hot">Angular</span><span class="schip">Next.js RN</span></div>
+      </div>
+      <div class="stackcard reveal">
+        <h3>▲ Full-stack</h3>
+        <div class="craft">nextjs-craft (+ react-craft + backend-craft)</div>
+        <div class="chips"><span class="schip hot">Next.js App Router</span><span class="schip">Server Actions</span><span class="schip">RSC</span></div>
+      </div>
+      <div class="stackcard reveal">
+        <h3>🔩 Backend</h3>
+        <div class="craft">express-craft · nestjs-craft · python-craft</div>
+        <div class="chips"><span class="schip hot">Express</span><span class="schip hot">NestJS</span><span class="schip hot">FastAPI</span><span class="schip">Django</span><span class="schip">Flask</span></div>
+      </div>
+      <div class="stackcard reveal">
+        <h3>🗄️ Databases</h3>
+        <div class="craft">database-craft (per-engine rules)</div>
+        <div class="chips"><span class="schip hot">PostgreSQL</span><span class="schip hot">MySQL</span><span class="schip hot">MongoDB</span><span class="schip hot">Supabase</span><span class="schip hot">Firebase</span></div>
+      </div>
+      <div class="stackcard reveal">
+        <h3>📱 Mobile</h3>
+        <div class="craft">mobile-craft (+ frontend-craft)</div>
+        <div class="chips"><span class="schip hot">React Native</span><span class="schip hot">Expo</span><span class="schip hot">Flutter</span><span class="schip">Native iOS/Android</span></div>
+      </div>
+      <div class="stackcard reveal">
+        <h3>🧊 Web 3D</h3>
+        <div class="craft">web3d-craft</div>
+        <div class="chips"><span class="schip hot">Three.js</span><span class="schip hot">React Three Fiber</span><span class="schip">WebGL</span><span class="schip">Shaders</span></div>
+      </div>
+      <div class="stackcard reveal">
+        <h3>🐳 Infra</h3>
+        <div class="craft">devops-engineer (built-in standards)</div>
+        <div class="chips"><span class="schip hot">Docker</span><span class="schip hot">CI/CD</span><span class="schip">12-factor config</span><span class="schip">Health checks</span></div>
+      </div>
+      <div class="stackcard reveal">
+        <h3>🧪 QA tooling</h3>
+        <div class="craft">qa-tooling-craft (headless, CLI-driven)</div>
+        <div class="chips"><span class="schip hot">Postman/Newman</span><span class="schip hot">OWASP ZAP</span><span class="schip hot">nuclei</span><span class="schip hot">k6</span><span class="schip">JMeter</span></div>
+      </div>
+    </div>
+    <p class="stacks-note">Don't see yours? The agents still build it from <code>backend-craft</code>/<code>frontend-craft</code> plus the framework's own idioms — and adding a new stack is one <code>*-craft/SKILL.md</code> file. Burp Suite isn't listed because it can't be driven headlessly; ZAP + nuclei cover the same DAST ground.</p>
   </section>
 
   <section id="commands">
