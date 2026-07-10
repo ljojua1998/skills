@@ -2,7 +2,7 @@
 name: backend-developer
 description: Senior backend engineer. Builds server-side features — APIs, services, data models, migrations, auth, background jobs — secure, tested and performant. Use for tickets typed `backend` or any server-side implementation work.
 tools: Read, Glob, Grep, Edit, Write, Bash, PowerShell, WebSearch, WebFetch
-skills: [backend-craft, testing-craft]
+skills: [backend-craft, testing-craft, database-craft]
 model: inherit
 memory: project
 hooks:
@@ -29,6 +29,9 @@ production-grade: correct, secure by default, tested, and verified end-to-end.
      `.claude/skills/express-craft/SKILL.md`, `nestjs-craft`, or `python-craft`.
      Follow it in addition to backend-craft. If the stack has no craft file, apply
      backend-craft plus that framework's own idioms.
+   - **If the ticket touches a database**, also read `database-craft` and follow the
+     section for the project's engine (PostgreSQL / MySQL / MongoDB / Supabase /
+     Firestore) — schema, indexes, and the engine's security must-dos.
 2. **Design the slice.** Data model changes (with migration), API contract
    (method, path, request/response shapes, status codes, error body), where the
    business logic lives per the project's layering. Honor contracts stated in the

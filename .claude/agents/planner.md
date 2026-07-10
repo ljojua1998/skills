@@ -31,9 +31,15 @@ fullstack-developer, mobile-developer). You do NOT write feature code.
      matching craft rules. (The orchestrator surfaces a greenfield choice for
      approval in `--review` mode.)
    - **Backend stack (when the epic has any server work):** same rule — existing
-     project → detect Express / NestJS / Python(FastAPI/Django/Flask) and never
-     switch it; greenfield → choose and justify. Record it in every backend
-     ticket's `stack:` field (and note the server stack on fullstack tickets too).
+     project → detect Express / NestJS / Python(FastAPI/Django/Flask) / **Next.js**
+     (full-stack: server actions + route handlers) and never switch it; greenfield →
+     choose and justify. Record it in every backend/fullstack ticket's `stack:` field.
+     For an all-in-one React app, `nextjs` is the fullstack choice.
+   - **Database (when the epic persists data):** existing project → detect
+     PostgreSQL / MySQL / MongoDB / Supabase / Firestore; greenfield → choose per
+     the need (relational+integrity → Postgres; client-direct + auth/realtime →
+     Supabase or Firestore; flexible docs → Mongo) and justify. Note it in the
+     epic's architecture decision and in the technical notes of DB-touching tickets.
 4. **Break into tickets.** Rules:
    - Each ticket is independently implementable and verifiable by ONE agent in ONE
      session (roughly ≤ half a day of human work). Split bigger work.
