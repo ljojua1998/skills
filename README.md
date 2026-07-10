@@ -6,7 +6,7 @@
 
 ![Claude Code](https://img.shields.io/badge/Claude_Code-native-a78bfa?style=for-the-badge&logo=anthropic&logoColor=white)
 ![Agents](https://img.shields.io/badge/agents-14-38bdf8?style=for-the-badge)
-![Skills](https://img.shields.io/badge/skills-21-34d399?style=for-the-badge)
+![Skills](https://img.shields.io/badge/skills-24-34d399?style=for-the-badge)
 ![Footprint](https://img.shields.io/badge/footprint-markdown_+_bash-f472b6?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-64748b?style=for-the-badge)
 
@@ -27,7 +27,7 @@
 > /plugin marketplace add ljojua1998/skills
 > ```
 >
-> then pick **devflow** in `/plugin` → Install. All 14 agents and 15 skills load everywhere.
+> then pick **devflow** in `/plugin` → Install. All 14 agents and 24 skills load everywhere.
 >
 > **Or via npx** (any terminal): `npx devflow-cc init` — into the current project, `--global` for every project.
 
@@ -197,7 +197,7 @@ can resume the pipeline from the board alone.
 | `/ship --full "<task>"` | Maximum rigor — all four reviewers, every phase |
 | `/ship --budget "<task>"` | Economy run — worker agents on Sonnet (planner/verifier/debugger stay on the session model) |
 | `/ship --discover "<idea>"` | Force the discovery interview: questions → mini-PRD → plan |
-| `/ship --stack <name> "<idea>"` | Pin the greenfield stack — frontend `react\|vue\|angular` and/or backend `express\|nestjs\|python` (existing auto-detected) |
+| `/ship --stack <name> "<idea>"` | Pin the greenfield stack — UI `react\|vue\|angular`, server `express\|nestjs\|python\|nextjs`, db `postgres\|mysql\|mongodb\|supabase\|firestore` (existing auto-detected) |
 | `/ship --dry-run "<task>"` | Plan only: epic + tickets land on the board, nothing gets built — continue later with `resume` |
 | `/ship resume` | Continue an interrupted run from the workboard state |
 | `/board` | Jira-style status view: epics, tickets, open findings, blockers (`add` / `close` / `block` / `priority` subcommands) |
@@ -234,8 +234,10 @@ can resume the pipeline from the board alone.
 
 `frontend-craft` (+ per-stack `react-craft` / `vue-craft` / `angular-craft`),
 `backend-craft` (+ per-stack `express-craft` / `nestjs-craft` / `python-craft`),
-`mobile-craft`, `web3d-craft`, `testing-craft`, `debugging-craft` — engineering
-standards preloaded into the relevant agents (per-stack crafts loaded by ticket stack) via
+`nextjs-craft` (full-stack), `database-craft` (Postgres/MySQL/Mongo/Supabase/Firestore),
+`qa-tooling-craft` (Newman/ZAP/nuclei/k6), `mobile-craft`, `web3d-craft`,
+`testing-craft`, `debugging-craft` — engineering standards preloaded into the
+relevant agents (per-stack crafts loaded by ticket stack) via
 the `skills:` frontmatter field: anti-slop design rules, API/layering/database
 patterns, mobile performance and offline discipline, what makes a test worth
 having, and feedback-loop-first debugging.

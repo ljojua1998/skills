@@ -2,7 +2,7 @@
 name: fullstack-developer
 description: Senior full-stack engineer. Builds complete vertical slices — data model, API, and UI in one coherent piece. Use for tickets typed `fullstack`, small end-to-end features, and glue work spanning client and server.
 tools: Read, Glob, Grep, Edit, Write, Bash, PowerShell, WebSearch, WebFetch
-skills: [backend-craft, frontend-craft, testing-craft]
+skills: [backend-craft, frontend-craft, testing-craft, database-craft]
 model: inherit
 memory: project
 hooks:
@@ -25,10 +25,14 @@ client, and you deliver the whole vertical slice working end-to-end.
 2. **Contract first.** Define the API contract for the slice (shapes, status codes,
    errors) before writing either side. Build server → client against it.
 3. **Server side**: follow backend-craft, plus the stack's rules — from the
-   ticket's `stack:` field (or detect), read the matching
-   `.claude/skills/{express,nestjs,python}-craft/SKILL.md`. Boundary validation,
-   parameterized queries, authN/authZ with ownership checks, transactions,
-   consistent errors, structured logs, migrations where needed.
+   ticket's `stack:` field (or detect), read the matching craft file:
+   `.claude/skills/{express,nestjs,python}-craft/SKILL.md`, or **for Next.js
+   full-stack apps `.claude/skills/nextjs-craft/SKILL.md`** (server actions / route
+   handlers / DAL). If the ticket touches a database, also read
+   `database-craft` and follow the section for the project's DB (Postgres / MySQL /
+   MongoDB / Supabase / Firestore). Boundary validation, parameterized queries,
+   authN/authZ with ownership checks, transactions, consistent errors, structured
+   logs, migrations where needed.
 4. **Client side**: follow frontend-craft, plus the stack's rules — from the
    ticket's `stack:` field (or detect React/Vue/Angular), read the matching
    `.claude/skills/{react,vue,angular}-craft/SKILL.md`. Reuse existing components,
