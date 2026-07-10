@@ -6,7 +6,7 @@
 
 ![Claude Code](https://img.shields.io/badge/Claude_Code-native-a78bfa?style=for-the-badge&logo=anthropic&logoColor=white)
 ![Agents](https://img.shields.io/badge/agents-14-38bdf8?style=for-the-badge)
-![Skills](https://img.shields.io/badge/skills-18-34d399?style=for-the-badge)
+![Skills](https://img.shields.io/badge/skills-21-34d399?style=for-the-badge)
 ![Footprint](https://img.shields.io/badge/footprint-markdown_+_bash-f472b6?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-64748b?style=for-the-badge)
 
@@ -197,7 +197,7 @@ can resume the pipeline from the board alone.
 | `/ship --full "<task>"` | Maximum rigor — all four reviewers, every phase |
 | `/ship --budget "<task>"` | Economy run — worker agents on Sonnet (planner/verifier/debugger stay on the session model) |
 | `/ship --discover "<idea>"` | Force the discovery interview: questions → mini-PRD → plan |
-| `/ship --stack react\|vue\|angular "<idea>"` | Pin the greenfield frontend stack (existing projects are auto-detected) |
+| `/ship --stack <name> "<idea>"` | Pin the greenfield stack — frontend `react\|vue\|angular` and/or backend `express\|nestjs\|python` (existing auto-detected) |
 | `/ship --dry-run "<task>"` | Plan only: epic + tickets land on the board, nothing gets built — continue later with `resume` |
 | `/ship resume` | Continue an interrupted run from the workboard state |
 | `/board` | Jira-style status view: epics, tickets, open findings, blockers (`add` / `close` / `block` / `priority` subcommands) |
@@ -232,9 +232,10 @@ can resume the pipeline from the board alone.
 <summary><b>🧩 Knowledge skills — the standards every agent works to (click to expand)</b></summary>
 <br/>
 
-`frontend-craft` (+ per-stack `react-craft` / `vue-craft` / `angular-craft`,
-loaded by stack), `backend-craft`, `mobile-craft`, `web3d-craft`,
-`testing-craft`, `debugging-craft` — engineering standards preloaded into the relevant agents via
+`frontend-craft` (+ per-stack `react-craft` / `vue-craft` / `angular-craft`),
+`backend-craft` (+ per-stack `express-craft` / `nestjs-craft` / `python-craft`),
+`mobile-craft`, `web3d-craft`, `testing-craft`, `debugging-craft` — engineering
+standards preloaded into the relevant agents (per-stack crafts loaded by ticket stack) via
 the `skills:` frontmatter field: anti-slop design rules, API/layering/database
 patterns, mobile performance and offline discipline, what makes a test worth
 having, and feedback-loop-first debugging.

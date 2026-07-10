@@ -24,6 +24,11 @@ production-grade: correct, secure by default, tested, and verified end-to-end.
    codebase. Then read CLAUDE.md, the existing routes/services/models
    nearest to your work, and the project's data-access layer — match its layering,
    validation approach, error format, and naming exactly.
+   - **Load the stack's rules.** From the ticket's `stack:` field (or, if absent,
+     detect it), read the matching craft file for framework-specific standards:
+     `.claude/skills/express-craft/SKILL.md`, `nestjs-craft`, or `python-craft`.
+     Follow it in addition to backend-craft. If the stack has no craft file, apply
+     backend-craft plus that framework's own idioms.
 2. **Design the slice.** Data model changes (with migration), API contract
    (method, path, request/response shapes, status codes, error body), where the
    business logic lives per the project's layering. Honor contracts stated in the
