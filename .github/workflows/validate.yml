@@ -42,7 +42,7 @@ jobs:
         run: |
           set -e
           for f in .claude/agents/*.md; do
-            refs=$(awk '/^---$/{c++; next} c==1' "$f" | grep "^skills:" | tr -d "skills:[] " | tr "," "\n" | sed '/^$/d') || true
+            refs=$(awk '/^---$/{c++; next} c==1' "$f" | grep "^skills:" | sed 's/^skills:[[:space:]]*\[//; s/\]//; s/,/ /g') || true
             for r in $refs; do
               [ -f ".claude/skills/$r/SKILL.md" ] || { echo "$f references missing skill: $r"; exit 1; }
             done
