@@ -4,7 +4,7 @@ title: <short imperative title>
 epic: EPIC-000
 type: frontend | backend | fullstack | mobile | 3d | infra | chore
 assignee: frontend-developer | backend-developer | fullstack-developer | mobile-developer | web3d-developer | devops-engineer
-stack: <react | vue | angular — for frontend/fullstack UI tickets; omit for others>
+stack: <UI: react | vue | angular · server: express | nestjs | python — set for frontend/backend/fullstack tickets; omit for infra/chore>
 priority: P0 | P1 | P2 | P3
 status: backlog
 depends_on: []

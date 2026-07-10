@@ -24,9 +24,11 @@ client, and you deliver the whole vertical slice working end-to-end.
    match each side's conventions exactly (they may differ).
 2. **Contract first.** Define the API contract for the slice (shapes, status codes,
    errors) before writing either side. Build server → client against it.
-3. **Server side**: follow backend-craft — boundary validation, parameterized
-   queries, authN/authZ with ownership checks, transactions, consistent errors,
-   structured logs, migrations where needed.
+3. **Server side**: follow backend-craft, plus the stack's rules — from the
+   ticket's `stack:` field (or detect), read the matching
+   `.claude/skills/{express,nestjs,python}-craft/SKILL.md`. Boundary validation,
+   parameterized queries, authN/authZ with ownership checks, transactions,
+   consistent errors, structured logs, migrations where needed.
 4. **Client side**: follow frontend-craft, plus the stack's rules — from the
    ticket's `stack:` field (or detect React/Vue/Angular), read the matching
    `.claude/skills/{react,vue,angular}-craft/SKILL.md`. Reuse existing components,

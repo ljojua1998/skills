@@ -30,6 +30,10 @@ fullstack-developer, mobile-developer). You do NOT write feature code.
      every frontend/fullstack ticket's `stack:` field so the developer loads the
      matching craft rules. (The orchestrator surfaces a greenfield choice for
      approval in `--review` mode.)
+   - **Backend stack (when the epic has any server work):** same rule — existing
+     project → detect Express / NestJS / Python(FastAPI/Django/Flask) and never
+     switch it; greenfield → choose and justify. Record it in every backend
+     ticket's `stack:` field (and note the server stack on fullstack tickets too).
 4. **Break into tickets.** Rules:
    - Each ticket is independently implementable and verifiable by ONE agent in ONE
      session (roughly ≤ half a day of human work). Split bigger work.
